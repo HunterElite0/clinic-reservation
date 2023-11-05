@@ -1,8 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "vEX/6eOt6GG5tmuMONK1tqrhP0796lCypFeyFWuoych+FatqeSk3TrUWoQuLOocIZaqz72nAoc04UADpoMPtsA==",
+  "dgSpecHash": "A2JJg3+LH8Ec2MOqEjmWyIFUpWRONSLbMEXf1kG7NDMsWbYcV5KaTZYM80q7qAI0QHfHx9JqigMs0SaXE/ehBQ==",
   "success": true,
   "projectFilePath": "/home/Fares/HDD/GitHub/clinic-reservation/clinic-reservation.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/Fares/.nuget/packages/microsoft.aspnetcore.openapi/7.0.13/microsoft.aspnetcore.openapi.7.0.13.nupkg.sha512",
+    "/home/Fares/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/home/Fares/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
+    "/home/Fares/.nuget/packages/swashbuckle.aspnetcore/6.5.0/swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "/home/Fares/.nuget/packages/swashbuckle.aspnetcore.swagger/6.5.0/swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "/home/Fares/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.5.0/swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "/home/Fares/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.5.0/swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
   "logs": []
 }
