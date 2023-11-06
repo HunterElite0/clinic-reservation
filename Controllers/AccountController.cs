@@ -1,12 +1,6 @@
 ﻿using System.Data;
 using clinic_reservation.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
-using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore;
 
 namespace clinic_reservation;
@@ -25,27 +19,39 @@ public class AccountController : ControllerBase
     [HttpGet(Name = "GetAccounts")]
     public JsonResult GetAccounts()
     {
-        // string query = @"SELECT * FROM account";
-        // DataTable table = new();
-        // string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-        // MySqlDataReader myReader;
-        // using (MySqlConnection myCon = new(sqlDataSource))
-        // {
-        //     myCon.Open();
-        //     using (MySqlCommand myCommand = new(query, myCon))
-        //     {
-        //         myReader = myCommand.ExecuteReader();
-        //         table.Load(myReader);
-        //         myReader.Close();
-        //         myCon.Close();
-        //     }
-        // }
-
-        // return new JsonResult(table);
-
         var accounts = _context.Account.AsNoTracking().ToList();
         return new JsonResult(accounts);
-
     }
 
+    [HttpPost("signup", Name = "Signup")]
+    public JsonResult Signup(Account account)
+    {
+        var query = _context.Account
+        .Where(a => a.Email == account.Email)
+        .FirstOrDefault();
+
+        if (query != null)
+        {
+            return new JsonResult("Email already exists");
+        }
+
+        _context.Account.Add(account);
+        _context.SaveChanges();
+        return new JsonResult("Account created successfuly");
+    }
+
+    [HttpPost("signin", Name = "Signin")]
+    public JsonResult Signin(Account account)
+    {
+        var query = _context.Account
+        .Where(a => a.Email == account.Email && a.Password == account.Password)
+        .FirstOrDefault();
+
+        if (query == null)
+        {
+            return new JsonResult("Email or password is incorrect");
+        }
+
+        return new JsonResult(query);
+    }
 }

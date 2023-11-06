@@ -27,7 +27,7 @@ public class Init : ControllerBase
         _logger.LogInformation("Database initiated");
         
         Account account = new Account();
-        account.Username = "test";
+        account.Email = "test";
         account.Email = "test@email.com";
         account.Password = "test";
         account.Role = Role.Doctor;
@@ -35,7 +35,7 @@ public class Init : ControllerBase
         _context.SaveChanges();
 
         var dbAccount = _context.Account
-            .Where(a => a.Username == account.Username)
+            .Where(a => a.Email == account.Email)
             .AsNoTracking()
             .FirstOrDefault();
         
