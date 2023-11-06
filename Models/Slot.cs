@@ -16,7 +16,7 @@ public class Slot
     public Appointment? Appointment { get; set; }
     public int AppointmentId { get; set; }
 
-    // one to many with doctor
+    // Many(slots) to One(doctor) with doctor
     public Doctor Doctor { get; set; }
 
 }

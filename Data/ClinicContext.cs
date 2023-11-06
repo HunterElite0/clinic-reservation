@@ -15,5 +15,5 @@ public class ClinicContext : DbContext
     public DbSet<Patient> Patient { get; set; }
     public DbSet<Slot> Slot { get; set; }
     public DbSet<Appointment> Appointment { get; set; }
-
+    public IEnumerable<object> Slots { get; internal set; }
 }

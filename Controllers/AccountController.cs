@@ -24,19 +24,52 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("signup", Name = "Signup")]
-    public JsonResult Signup(Account account)
+    public JsonResult Signup(AccountInformationDto accountInformationDto)
     {
-        var query = _context.Account
-        .Where(a => a.Email == account.Email)
+
+        var accountQuery = _context.Account
+        .Where(a => a.Email == accountInformationDto.Account.Email)
         .FirstOrDefault();
 
-        if (query != null)
+        if (accountQuery != null)
         {
             return new JsonResult("Email already exists");
         }
 
+        var account = new Account
+        {
+            Email = accountInformationDto.Account.Email,
+            Password = accountInformationDto.Account.Password,
+            Role = accountInformationDto.Account.Role
+        };
         _context.Account.Add(account);
+
+        if (accountInformationDto.Account.Role == Role.Doctor)
+        {
+            var doctor = new Doctor
+            {
+                Name = accountInformationDto.Name,
+                Speciality = accountInformationDto.Speciality,
+                Account = account
+            };
+            _context.Doctor.Add(doctor);
+        }
+        else if (accountInformationDto.Account.Role == Role.Patient)
+        {
+            var patient = new Patient
+            {
+                Name = accountInformationDto.Name,
+                Account = account
+            };
+            _context.Patient.Add(patient);
+        }
+        else
+        {
+            return new JsonResult("Error creating account");
+        }
+
         _context.SaveChanges();
+
         return new JsonResult("Account created successfuly");
     }
 
