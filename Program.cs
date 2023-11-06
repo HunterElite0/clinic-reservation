@@ -2,10 +2,12 @@ using clinic_reservation;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql;
 using Newtonsoft.Json.Serialization;
+using clinic_reservation.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var serverVersion = ServerVersion.AutoDetect(connectionString);
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -35,4 +37,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.Run(); 

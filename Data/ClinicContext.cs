@@ -10,5 +10,10 @@ public class ClinicContext : DbContext
     {
     }
 
-    public DbSet<Account> Account {get; set;}
+    public DbSet<Account> Account { get; set; }
+    public DbSet<Doctor> Doctor { get; set; }
+    public DbSet<Patient> Patient { get; set; }
+    public DbSet<Slot> Slot { get; set; }
+    public DbSet<Appointment> Appointment { get; set; }
+
 }

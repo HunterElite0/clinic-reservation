@@ -1,13 +1,26 @@
-﻿namespace clinic_reservation.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace clinic_reservation.Models;
+
+public enum Role
 {
-    public class Account
+    Patient,
+    Doctor,
+}
+public class Account
+{
+    public Account(string Username, string Email, string Password, Role Role)
     {
-        public int AccountId { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Type { get; set; }
-
-
+        this.Username = Username;
+        this.Email = Email;
+        this.Password = Password;
+        this.Role = Role;
     }
+
+    public Account(){}
+    public int Id { get; set; }
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public Role Role { get; set; }
 }
