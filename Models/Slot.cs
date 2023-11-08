@@ -10,7 +10,7 @@ public class Slot
     public Slot() {}
     
     public int Id { get; set; }
-    public string startTime { get; set; }
+    public string StartTime { get; set; }
     public bool IsBooked { get; set; }
 
 

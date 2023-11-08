@@ -20,34 +20,39 @@ public class SlotController
         return query;
     }
 
-    public void AddSlot(int DoctorId, string startDate, string endDate)
+    public void AddSlot(int DoctorId, string startTime)
     {
-        var slot = new Slot();
-        var doctor = _context.Doctor.Where(d => d.Id == DoctorId).FirstOrDefault();
-
-        if (doctor == null)
+        var doctorQuery = _context.Doctor
+            .Where(d => d.Id == DoctorId)
+            .FirstOrDefault();
+        
+        // if doctor does not exist, throw exception
+        if(doctorQuery == null)
         {
             throw new InvalidDataException("Doctor not found");
-        }
+        }   
 
-        startDate = DateTime.Parse(startDate).ToString("yyyy-MM-dd HH:mm");
-        endDate = DateTime.Parse(endDate).ToString("yyyy-MM-dd HH:mm");
-        var slots = _context.Slot.Where(s => s.Doctor.Id == DoctorId)
-                    .Where(s => s.startTime == startDate);
+        var slotQuery = _context.Slot
+            .Where(s => s.Doctor.Id == DoctorId
+            && s.StartTime == startTime)
+            .FirstOrDefault();
 
-
-        if (slots.Any())
+        // if slot exists for the same doctor, throw exception 
+        if(slotQuery != null)
         {
             throw new InvalidDataException("Slot already exists");
         }
-        
-        // Console.WriteLine(startDate + "==================================");
-        // Console.WriteLine(endDate + "==================================");
-        // Console.WriteLine(DateTime.Parse(startDate).Month + "==================================");
 
-        slot.Doctor = doctor;
-        slot.startTime = startDate;
+
+        var slot = new Slot
+        {
+            StartTime = DateTime.Parse(startTime).ToString("yyyy-MM-dd HH:mm"),
+            IsBooked = false,
+            DoctorId = DoctorId
+        };
+
         _context.Slot.Add(slot);
         _context.SaveChanges();
+
     }
 }

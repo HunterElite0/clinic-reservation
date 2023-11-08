@@ -38,11 +38,11 @@ public class DoctorController
     }
 
     [HttpPost("slots", Name = "AddSlot")]
-    public JsonResult AddSlot(int DoctorId, string startDate, string endDate)
+    public JsonResult AddSlot(int doctorId, string startDate)
     {
         try
         {
-            _slotController.AddSlot(DoctorId, startDate, endDate);
+            _slotController.AddSlot(doctorId, startDate);
         }
         catch (InvalidDataException e)
         {
