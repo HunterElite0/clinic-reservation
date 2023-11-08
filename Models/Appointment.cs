@@ -8,6 +8,7 @@ public class Appointment
     public int SlotId { get; set; }
     public Slot Slot { get; set; } = null!;
     // many to one with patient
-    public Patient Patient { get; set; }
+    public int PatientId { get; set; }
+    public Patient Patient { get; set; } = null!;
     
 }
