@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using clinic_reservation.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace clinic_reservation;
 
@@ -16,6 +17,7 @@ public class SlotController
     {
         var query = _context.Slot
         .Where(s => s.Doctor.Id == Id)
+        .Include(s => s.Appointment)
         .ToList();
         return query;
     }

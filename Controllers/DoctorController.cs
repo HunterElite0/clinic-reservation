@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Update;
 
 namespace clinic_reservation;
@@ -20,7 +21,10 @@ public class DoctorController
     [HttpGet("doctors", Name = "GetDoctors")]
     public JsonResult GetDoctors()
     {
-        var results = _context.Doctor.ToList();
+        var results = _context.Doctor
+            .Include(d => d.Account)
+            .Include(d => d.Slots)
+            .ToList();
         return new JsonResult(results);
     }   
 
