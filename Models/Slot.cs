@@ -11,7 +11,6 @@ public class Slot
     
     public int Id { get; set; }
     public string startTime { get; set; }
-    public string endTime { get; set; }
     public bool IsBooked { get; set; }
 
 

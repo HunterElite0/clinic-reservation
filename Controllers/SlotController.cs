@@ -33,8 +33,8 @@ public class SlotController
         startDate = DateTime.Parse(startDate).ToString("yyyy-MM-dd HH:mm");
         endDate = DateTime.Parse(endDate).ToString("yyyy-MM-dd HH:mm");
         var slots = _context.Slot.Where(s => s.Doctor.Id == DoctorId)
-                    .Where(s => s.startTime == startDate)
-                    .Where(s => s.endTime == endDate);
+                    .Where(s => s.startTime == startDate);
+
 
         if (slots.Any())
         {
@@ -47,7 +47,6 @@ public class SlotController
 
         slot.Doctor = doctor;
         slot.startTime = startDate;
-        slot.endTime = endDate;
         _context.Slot.Add(slot);
         _context.SaveChanges();
     }
