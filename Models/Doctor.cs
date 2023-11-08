@@ -17,6 +17,6 @@ public class Doctor
     public ICollection<Slot> Slots { get; set; }
 
     public int AccountId { get; set; }
-    public required Account Account { get; set; }
+    public required Account Account { get; set; } = null!;
 
 }

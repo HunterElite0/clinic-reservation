@@ -7,16 +7,19 @@ namespace clinic_reservation;
 
 public class Slot
 {
+    public Slot() {}
+    
     public int Id { get; set; }
-    public DateTime Date { get; set; }
+    public string startTime { get; set; }
+    public string endTime { get; set; }
     public bool IsBooked { get; set; }
 
 
     // one to one with appointment
     public Appointment? Appointment { get; set; }
-    public int AppointmentId { get; set; }
 
     // Many(slots) to One(doctor) with doctor
+    public int DoctorId { get; set; }
     public Doctor Doctor { get; set; }
 
 }

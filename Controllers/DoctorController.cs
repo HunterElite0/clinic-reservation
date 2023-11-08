@@ -38,11 +38,11 @@ public class DoctorController
     }
 
     [HttpPost("slots", Name = "AddSlot")]
-    public JsonResult AddSlot(int DoctorId, DateTime dateTime)
+    public JsonResult AddSlot(int DoctorId, string startDate, string endDate)
     {
         try
         {
-            _slotController.AddSlot(DoctorId, dateTime);
+            _slotController.AddSlot(DoctorId, startDate, endDate);
         }
         catch (InvalidDataException e)
         {
@@ -50,22 +50,6 @@ public class DoctorController
         };
 
         return new JsonResult("Slot added successfuly.");
-    }
-
-    // Get doctor by account id
-    [HttpGet("account", Name = "GetDoctorByAccountId")]
-    public JsonResult GetDoctorByAccountId(int AccountId)
-    {
-        var doctor = _context.Doctor
-        .Where(d => d.AccountId == AccountId)
-        .FirstOrDefault();
-
-        if (doctor == null)
-        {
-            return new JsonResult("Doctor not found.");
-        }
-
-        return new JsonResult(_context.Account.Where(a => a.Id == doctor.AccountId).FirstOrDefault().Email);
     }
 
 }
