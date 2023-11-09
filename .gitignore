@@ -1,6 +1,6 @@
-clinic-reservation/bin/
-clinic-reservation/obj/
-clinic-reservation/wwwroot/uploads/
+/bin/
+/obj
+/wwwroot/uploads/
 .vs/
 *.pdb
 *.dll
