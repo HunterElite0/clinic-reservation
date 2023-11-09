@@ -1,6 +1,8 @@
 clinic-reservation/bin/
 clinic-reservation/obj/
-clinic-reservation/wwwroot/uploads/
 .vs/
+bin/
 *.pdb
 *.dll
+*.v2
+
