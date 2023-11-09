@@ -2,6 +2,7 @@ clinic-reservation/bin/
 clinic-reservation/obj/
 .vs/
 bin/
+obj/
 *.pdb
 *.dll
 *.v2
