@@ -35,7 +35,7 @@ public class SlotController
         // if slot exists for the same doctor, throw exception 
         if(slotQuery != null)
         {
-            throw new InvalidDataException("Slot already exists");
+            throw new InvalidOperationException("Slot already exists");
         }
 
 
@@ -49,5 +49,26 @@ public class SlotController
         _context.Slot.Add(slot);
         _context.SaveChanges();
 
+    }
+
+    public void CancelSlot(int DoctorId, int SlotId)
+    {
+        var slot =_context.Slot
+            .Where(s => s.Id == SlotId && s.Doctor.Id == DoctorId)
+            .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
+        
+        _context.Slot.Remove(slot);
+        _context.SaveChanges();
+
+    }
+
+    public void UpdateSlot(int DoctorId, int SlotId, string StartTime)
+    {
+        var slot = _context.Slot
+            .Where(s => s.Id == SlotId && s.Doctor.Id == DoctorId)
+            .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
+
+        slot.StartTime = DateTime.Parse(StartTime).ToString("yyyy-MM-dd HH:mm");
+        _context.SaveChanges();
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Update;
 namespace clinic_reservation;
 [ApiController]
 [Route("[controller]")]
-public class DoctorController
+public class DoctorController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly ClinicContext _context;
@@ -23,7 +23,7 @@ public class DoctorController
     {
         var results = _context.Doctor
             .Include(d => d.Account)
-            .Include(d => d.Slots.Count)
+            .Include(d => d.Slots)
             .ToList();
         return new JsonResult(results);
     }   
@@ -54,6 +54,36 @@ public class DoctorController
         };
 
         return new JsonResult("Slot added successfuly.");
+    }
+
+    [HttpDelete("slots", Name = "UpdateSlot")]
+    public JsonResult CancelSlot(int DoctorId, int SlotId)
+    {
+        try
+        {
+            _slotController.CancelSlot(DoctorId, SlotId);
+        }
+        catch (InvalidDataException e)
+        {
+            return new JsonResult(e.Message);
+        }
+
+        return new JsonResult("Slot cancelled successfuly.");
+    }
+
+    [HttpPut("slots", Name = "UpdateSlot")]
+    public JsonResult UpdateSlot(int DoctorId, int SlotId, string StartTime)
+    {
+        try
+        {
+            _slotController.UpdateSlot(DoctorId, SlotId, StartTime);
+        }
+        catch (InvalidDataException e)
+        {
+            return new JsonResult(e.Message);
+        }
+
+        return new JsonResult("Slot updated successfuly.");
     }
 
 }

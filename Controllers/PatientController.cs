@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace clinic_reservation;
 
-public class PatientController
+[ApiController]
+[Route("[controller]")]
+public class PatientController : ControllerBase
 {
     private readonly ClinicContext _context;
     private readonly IConfiguration _configuration;
@@ -20,7 +22,7 @@ public class PatientController
     {
         var results = _context.Patient
             .Include(p => p.Account)
-            .Include(p => p.Appointments.Count)
+            .Include(p => p.Appointments)
             .ToList();
         return new JsonResult(results);
     }
@@ -40,28 +42,33 @@ public class PatientController
     [HttpPost("appointments", Name = "AddAppointment")]
     public JsonResult AddAppointment(int PatientId, int SlotId)
     {
-        var slot = _context.Slot
-            .Where(s => s.Id == SlotId)
-            .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
-
-        if (slot.IsBooked)
+        try
         {
-            return new JsonResult("Slot is already booked.");
+            _appointmentController.MakeAppointment(PatientId, SlotId);
+        }
+        catch (InvalidDataException e)
+        {
+            return new JsonResult(e.Message);
+        }
+        catch (InvalidOperationException e)
+        {
+            
+            return new JsonResult(e.Message);
         }
 
-        var patient = _context.Patient
-            .Where(p => p.Id == PatientId)
-            .FirstOrDefault() ?? throw new InvalidDataException("Patient not found");
-
-        var appointment = new Appointment
-        {
-            PatientId = PatientId,
-            SlotId = SlotId
-        };
-
-        _context.Appointment.Add(appointment);
-        _context.SaveChanges();
-
         return new JsonResult("Appointment added successfuly.");
+    }
+    [HttpDelete("appointments", Name = "CancelAppointment")]
+    public JsonResult CancelAppointment(int PatientId, int AppointmentId)
+    {
+        try
+        {
+            _appointmentController.CancelAppointment(PatientId, AppointmentId);
+        }
+        catch (InvalidDataException e)
+        {
+            return new JsonResult(e.Message);
+        }
+        return new JsonResult("Appointment cancelled successfuly.");
     }
 }
