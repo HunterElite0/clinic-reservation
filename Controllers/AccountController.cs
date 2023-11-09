@@ -1,9 +1,11 @@
 ﻿using System.Data;
 using clinic_reservation.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace clinic_reservation;
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class AccountController : ControllerBase
@@ -15,6 +17,7 @@ public class AccountController : ControllerBase
         _configuration = configuration;
         _context = context;
     }
+
 
     [HttpGet(Name = "GetAccounts")]
     public JsonResult GetAccounts()
