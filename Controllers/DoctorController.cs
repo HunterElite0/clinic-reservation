@@ -23,7 +23,7 @@ public class DoctorController
     {
         var results = _context.Doctor
             .Include(d => d.Account)
-            .Include(d => d.Slots)
+            .Include(d => d.Slots.Count)
             .ToList();
         return new JsonResult(results);
     }   
@@ -42,11 +42,11 @@ public class DoctorController
     }
 
     [HttpPost("slots", Name = "AddSlot")]
-    public JsonResult AddSlot(int doctorId, string startDate)
+    public JsonResult AddSlot(int DoctorId, string StartDate)
     {
         try
         {
-            _slotController.AddSlot(doctorId, startDate);
+            _slotController.AddSlot(DoctorId, StartDate);
         }
         catch (InvalidDataException e)
         {
