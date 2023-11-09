@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using clinic_reservation.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Update;
 
@@ -9,12 +10,12 @@ public class DoctorController
 {
     private readonly IConfiguration _configuration;
     private readonly ClinicContext _context;
-    private readonly SlotController _slotController;
+    private readonly SlotService _slotController;
     public DoctorController(IConfiguration configuration, ClinicContext context)
     {
         _configuration = configuration;
         _context = context;
-        _slotController = new(this._context);
+        _slotController = new(_context);
     }
 
 
@@ -30,9 +31,9 @@ public class DoctorController
 
 
     [HttpGet("slots", Name = "GetSlots")]
-    public JsonResult GetSlots(int DoctorId)
+    public JsonResult GetSlots(int Id)
     {
-        var results = _slotController.GetDoctorSlots(DoctorId);
+        var results = _slotController.GetDoctorSlots(Id);
 
         if (results.Count == 0)
         {
