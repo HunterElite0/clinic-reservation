@@ -37,9 +37,9 @@ export default function Home() {
   }
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
+      <div className={styles.formdiv}>
         <h1>Sign in</h1>
-        <form onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <label htmlFor="email">Email</label>
           <input
             required
@@ -58,6 +58,7 @@ export default function Home() {
           />
           <button type="submit">Sign in</button>
         </form>
+        <h3>Don't have an account?</h3> <a className={styles.a} href="/signup">Sign up here.</a>
       </div>
     </main>
   );
