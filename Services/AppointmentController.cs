@@ -26,6 +26,11 @@ public class AppointmentController
     }
     public void MakeAppointment(int AccountId, int SlotId)
     {
+
+        var patient = _context.Patient
+            .Where(p => p.AccountId == AccountId)
+            .FirstOrDefault() ?? throw new InvalidDataException("Account not found");
+
         var slot = _context.Slot
             .Where(s => s.Id == SlotId)
             .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
@@ -34,10 +39,6 @@ public class AppointmentController
         {
             throw new InvalidOperationException("Slot is already booked.");
         }
-
-        var patient = _context.Patient
-            .Where(p => p.AccountId == AccountId)
-            .FirstOrDefault() ?? throw new InvalidDataException("Patient not found");
 
 
     
@@ -53,6 +54,10 @@ public class AppointmentController
 
     public void CancelAppointment(int AccountId, int AppointmentId)
     {
+        var accountQuery = _context.Account
+            .Where(a => a.Id == AccountId)
+            .FirstOrDefault() ?? throw new InvalidDataException("Account not found");
+
         var appointment = _context.Appointment
             .Where(a => a.Id == AppointmentId && a.Patient.AccountId == AccountId)
             .FirstOrDefault() ?? throw new InvalidDataException("Appointment not found");

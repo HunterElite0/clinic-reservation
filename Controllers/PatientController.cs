@@ -58,7 +58,7 @@ public class PatientController : ControllerBase
         {
             return new JsonResult(e.Message);
         }
-        catch (InvalidOperationException e)
+        catch (Exception e)
         {
 
             return new JsonResult(e.Message);
