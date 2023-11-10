@@ -30,9 +30,9 @@ public class DoctorController : ControllerBase
 
 
     [HttpGet("slots", Name = "GetSlots")]
-    public JsonResult GetSlots(int DoctorId)
+    public JsonResult GetSlots([FromQuery] int id)
     {
-        var results = _slotController.GetDoctorSlots(DoctorId);
+        var results = _slotController.GetDoctorSlots(id);
 
         if (results.Count == 0)
         {

@@ -28,9 +28,9 @@ public class PatientController : ControllerBase
     }
 
     [HttpGet("appointments", Name = "GetAppointments")]
-    public JsonResult GetAppointments(int PatientId)
+    public JsonResult GetAppointments([FromQuery] int id)
     {
-        var results = _appointmentController.GetPatientAppointments(PatientId);
+        var results = _appointmentController.GetPatientAppointments(id);
 
         if (results.Count == 0)
         {
