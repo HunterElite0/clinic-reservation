@@ -2,20 +2,18 @@
 
 import Image from "next/image";
 import styles from "./page.module.css";
-import { cookies } from "next/headers";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  var cookie = require('cookie-cutter')
 
   const handleSubmit = async (e : any) => {
-    console.log("submiteddddd");
     e.preventDefault();
     const account = { email, password };
-    console.log(account);
     const response = await fetch("http://localhost:5243/Account/signin", {
       method: "POST",
       headers: {
@@ -29,7 +27,12 @@ export default function Home() {
     }
     else{
       alert("Logged in successfully");
-      router.push("/home");
+      cookie.set('id', data.Id)
+      cookie.set('email', data.Email)
+      cookie.set('role', data.Role)
+      cookie.set('password',data.Password)
+      if(data.Role === 0){router.push("/doctor")}
+      else{router.push("/patient")}
     }
   }
   return (

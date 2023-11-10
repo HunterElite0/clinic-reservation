@@ -14,7 +14,7 @@ public class AppointmentController
     public ICollection<Appointment> GetPatientAppointments(int Id)
     {
         var query = _context.Appointment
-        .Where(a => a.Patient.Id == Id)
+        .Where(a => a.Patient.Account.Id == Id)
         .Include(a => a.Slot)
         .ToList();
         return query;
