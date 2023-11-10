@@ -33,11 +33,19 @@ public class SlotController
             .FirstOrDefault();
 
         // if slot exists for the same doctor, throw exception 
-        if(slotQuery != null)
+        if (slotQuery != null)
         {
             throw new InvalidOperationException("Slot already exists");
         }
 
+        try
+        {
+            DateTime.Parse(StartTime).ToString("yyyy-MM-dd HH:mm");
+        }
+        catch
+        {
+            throw new InvalidDataException("Invalid date format");
+        }
 
         var slot = new Slot
         {
@@ -53,10 +61,14 @@ public class SlotController
 
     public void CancelSlot(int AccountId, int SlotId)
     {
-        var slot =_context.Slot
+        var accountQuery = _context.Account
+            .Where(a => a.Id == AccountId)
+            .FirstOrDefault() ?? throw new InvalidDataException("Account not found");
+
+        var slot = _context.Slot
             .Where(s => s.Id == SlotId && s.Doctor.AccountId == AccountId)
             .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
-        
+
         _context.Slot.Remove(slot);
         _context.SaveChanges();
 
@@ -64,11 +76,24 @@ public class SlotController
 
     public void UpdateSlot(int AccountId, int SlotId, string StartTime)
     {
+        var accountQuery = _context.Account
+          .Where(a => a.Id == AccountId)
+          .FirstOrDefault() ?? throw new InvalidDataException("Account not found");
+
         var slot = _context.Slot
             .Where(s => s.Id == SlotId && s.Doctor.Account.Id == AccountId)
             .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
 
-        slot.StartTime = DateTime.Parse(StartTime).ToString("yyyy-MM-dd HH:mm");
+        try
+        {
+            slot.StartTime = DateTime.Parse(StartTime).ToString("yyyy-MM-dd HH:mm");
+        }
+        catch
+        {
+            throw new InvalidDataException("Invalid date format");
+        }
         _context.SaveChanges();
     }
+
+
 }

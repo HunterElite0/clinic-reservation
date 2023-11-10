@@ -30,13 +30,21 @@ public class PatientController : ControllerBase
     [HttpGet("appointments", Name = "GetAppointments")]
     public JsonResult GetAppointments([FromQuery] int id)
     {
-        var results = _appointmentController.GetPatientAppointments(id);
-
-        if (results.Count == 0)
+        try
         {
-            return new JsonResult("You have no appointments.");
+            var results = _appointmentController.GetPatientAppointments(id);
+            if (results.Count == 0)
+            {
+                return new JsonResult("You have no appointments.");
+            }
+            return new JsonResult(results);
         }
-        return new JsonResult(results);
+        catch (InvalidDataException e)
+        {
+            return new JsonResult(e.Message);
+        }
+
+
     }
 
     [HttpPost("appointments", Name = "AddAppointment")]
@@ -52,7 +60,7 @@ public class PatientController : ControllerBase
         }
         catch (InvalidOperationException e)
         {
-            
+
             return new JsonResult(e.Message);
         }
 

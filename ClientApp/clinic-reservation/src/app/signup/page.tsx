@@ -18,7 +18,7 @@ export default function Page() {
     return (
         <main className={styles.main}>
             <div className={styles.formdiv}>
-                <h1>Sign in</h1>
+                <h1>Sign Up</h1>
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <label htmlFor="email">Email</label>
                     <input
@@ -46,6 +46,7 @@ export default function Page() {
                     />
                     <label htmlFor="role">Specialty</label>
                     <input
+                        className={styles.radio}
                         required
                         type="radio"
                         id="doctorRole"
@@ -55,6 +56,7 @@ export default function Page() {
                     />
                     <label htmlFor="doctorRole">Doctor</label>
                     <input
+                        className={styles.radio}
                         required
                         type="radio"
                         id="patientRole"
@@ -63,7 +65,7 @@ export default function Page() {
                         value={role}
                     />
                     <label htmlFor="patientRole">Patient</label>
-                    <button type="submit">Sign in</button>
+                    <button type="submit">Register</button>
                 </form>
                 <h3>Don't have an account?</h3> <a className={styles.a} href="/signup">Sign up here.</a>
             </div>

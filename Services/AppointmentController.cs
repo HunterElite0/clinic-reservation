@@ -13,6 +13,10 @@ public class AppointmentController
 
     public ICollection<Appointment> GetPatientAppointments(int Id)
     {
+        var accountQuery = _context.Account
+            .Where(a => a.Id == Id)
+            .FirstOrDefault() ?? throw new InvalidDataException("Account not found");
+
         var query = _context.Appointment
         .Where(a => a.Patient.AccountId == Id)
         .Include(a => a.Slot)
@@ -35,9 +39,11 @@ public class AppointmentController
             .Where(p => p.AccountId == AccountId)
             .FirstOrDefault() ?? throw new InvalidDataException("Patient not found");
 
+
+    
         var appointment = new Appointment
         {
-            PatientId = AccountId,
+            PatientId = patient.Id,
             SlotId = SlotId
         };
         slot.IsBooked = true;
