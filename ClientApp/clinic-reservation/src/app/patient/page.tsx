@@ -34,28 +34,50 @@ export default function Page() {
         fetchAppointmets();
     }, []);
 
+    const handleEdit = (id: number) => {
+        // Implement your edit logic here
+        console.log(`Edit button clicked for appointment with id ${id}`);
+    };
+    const handleCancel = (id: number) => {
+        // Implement your cancel logic here
+        console.log(`Cancel button clicked for appointment with id ${id}`);
+    }
 
     return (
         <main>
             <h1>Hello User (user type: Patient)</h1>
             <h2>My Appointments</h2>
             <div>
-                <table>
-                    <tr>
-                        <th>Appointment</th>
-                        <th>Doctor</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    {appointments.map((appointment) => (
-                        <tr>
-                            <td>{appointment.Slot.StartTime}</td>
-                            <td>{appointment.Doctor}</td>
-                            <td><button>Edit</button></td>
-                            <td><button>Cancel</button></td>
-                        </tr>
-                    ))}
-                </table>
+            <table>
+           <thead>
+             <tr>
+               <th>Appointment Date</th>
+               <th>Doctor</th>
+               <th></th>
+               <th></th>
+             </tr>
+           </thead>
+           <tbody>
+             {Array.isArray(appointments) && appointments.length > 0 ? (
+               appointments.map(appointment => (
+                 <tr key={appointment.Id}>
+                   <td>{appointment.Slot.StartTime}</td>
+                   <td>Dr.{appointment.Slot.Doctor.Name}</td>
+                   <td>
+                     <button onClick={() => handleEdit(appointment.Id)}>Edit</button>
+                   </td>
+                   <td>
+                     <button onClick={() => handleCancel(appointment.Id)}>Cancel</button>
+                   </td>
+                 </tr>
+               ))
+             ) : (
+               <tr>
+                 <td colSpan={4}>No appointments available</td>
+               </tr>
+             )}
+           </tbody>
+         </table>
             </div>
         </main>
     );

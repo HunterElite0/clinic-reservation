@@ -42,11 +42,11 @@ public class DoctorController : ControllerBase
     }
 
     [HttpPost("slots", Name = "AddSlot")]
-    public JsonResult AddSlot(int DoctorId, string StartDate)
+    public JsonResult AddSlot(int AccountId, string StartDate)
     {
         try
         {
-            _slotController.AddSlot(DoctorId, StartDate);
+            _slotController.AddSlot(AccountId, StartDate);
         }
         catch (InvalidDataException e)
         {
@@ -57,11 +57,11 @@ public class DoctorController : ControllerBase
     }
 
     [HttpDelete("slots", Name = "UpdateSlot")]
-    public JsonResult CancelSlot(int DoctorId, int SlotId)
+    public JsonResult CancelSlot(int AccountId, int SlotId)
     {
         try
         {
-            _slotController.CancelSlot(DoctorId, SlotId);
+            _slotController.CancelSlot(AccountId, SlotId);
         }
         catch (InvalidDataException e)
         {
@@ -72,11 +72,11 @@ public class DoctorController : ControllerBase
     }
 
     [HttpPut("slots", Name = "UpdateSlot")]
-    public JsonResult UpdateSlot(int DoctorId, int SlotId, string StartTime)
+    public JsonResult UpdateSlot(int AccountId, int SlotId, string StartTime)
     {
         try
         {
-            _slotController.UpdateSlot(DoctorId, SlotId, StartTime);
+            _slotController.UpdateSlot(AccountId, SlotId, StartTime);
         }
         catch (InvalidDataException e)
         {

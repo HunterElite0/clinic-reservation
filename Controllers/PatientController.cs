@@ -40,11 +40,11 @@ public class PatientController : ControllerBase
     }
 
     [HttpPost("appointments", Name = "AddAppointment")]
-    public JsonResult AddAppointment(int PatientId, int SlotId)
+    public JsonResult AddAppointment(int AccountId, int SlotId)
     {
         try
         {
-            _appointmentController.MakeAppointment(PatientId, SlotId);
+            _appointmentController.MakeAppointment(AccountId, SlotId);
         }
         catch (InvalidDataException e)
         {
@@ -59,16 +59,34 @@ public class PatientController : ControllerBase
         return new JsonResult("Appointment added successfuly.");
     }
     [HttpDelete("appointments", Name = "CancelAppointment")]
-    public JsonResult CancelAppointment(int PatientId, int AppointmentId)
+    public JsonResult CancelAppointment(int AccountId, int AppointmentId)
     {
         try
         {
-            _appointmentController.CancelAppointment(PatientId, AppointmentId);
+            _appointmentController.CancelAppointment(AccountId, AppointmentId);
         }
         catch (InvalidDataException e)
         {
             return new JsonResult(e.Message);
         }
         return new JsonResult("Appointment cancelled successfuly.");
+    }
+
+    [HttpPut("appointments", Name = "EditAppointment")]
+    public JsonResult EditAppointment(int AccountId, int AppointmentId, int SlotId)
+    {
+        try
+        {
+            _appointmentController.EditAppointment(AccountId, AppointmentId, SlotId);
+        }
+        catch (InvalidDataException e)
+        {
+            return new JsonResult(e.Message);
+        }
+        catch (InvalidOperationException e)
+        {
+            return new JsonResult(e.Message);
+        }
+        return new JsonResult("Appointment updated successfuly.");
     }
 }

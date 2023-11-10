@@ -13,22 +13,22 @@ public class SlotController
         this._context = context;
     }
 
-    public ICollection<Slot> GetDoctorSlots(int Id)
+    public ICollection<Slot> GetDoctorSlots(int AccountId)
     {
         var query = _context.Slot
-        .Where(s => s.Doctor.Id == Id)
+        .Where(s => s.Doctor.AccountId == AccountId)
         .Include(s => s.Appointment)
         .ToList();
         return query;
     }
 
-    public void AddSlot(int DoctorId, string StartTime)
+    public void AddSlot(int AccountId, string StartTime)
     {
         var doctorQuery = _context.Doctor
-            .Where(d => d.Id == DoctorId)
+            .Where(d => d.AccountId == AccountId)
             .FirstOrDefault() ?? throw new InvalidDataException("Doctor not found");
         var slotQuery = _context.Slot
-            .Where(s => s.Doctor.Id == DoctorId
+            .Where(s => s.Doctor.Account.Id == AccountId
             && s.StartTime == StartTime)
             .FirstOrDefault();
 
@@ -43,7 +43,7 @@ public class SlotController
         {
             StartTime = DateTime.Parse(StartTime).ToString("yyyy-MM-dd HH:mm"),
             IsBooked = false,
-            DoctorId = DoctorId
+            DoctorId = AccountId
         };
 
         _context.Slot.Add(slot);
@@ -51,10 +51,10 @@ public class SlotController
 
     }
 
-    public void CancelSlot(int DoctorId, int SlotId)
+    public void CancelSlot(int AccountId, int SlotId)
     {
         var slot =_context.Slot
-            .Where(s => s.Id == SlotId && s.Doctor.Id == DoctorId)
+            .Where(s => s.Id == SlotId && s.Doctor.AccountId == AccountId)
             .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
         
         _context.Slot.Remove(slot);
@@ -62,10 +62,10 @@ public class SlotController
 
     }
 
-    public void UpdateSlot(int DoctorId, int SlotId, string StartTime)
+    public void UpdateSlot(int AccountId, int SlotId, string StartTime)
     {
         var slot = _context.Slot
-            .Where(s => s.Id == SlotId && s.Doctor.Id == DoctorId)
+            .Where(s => s.Id == SlotId && s.Doctor.Account.Id == AccountId)
             .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
 
         slot.StartTime = DateTime.Parse(StartTime).ToString("yyyy-MM-dd HH:mm");
