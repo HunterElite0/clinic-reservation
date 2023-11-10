@@ -44,9 +44,11 @@ export default function Page() {
                         onChange={(e) => setName(e.target.value)}
                         value={name}
                     />
-                    <label htmlFor="role">Specialty</label>
+                    <div className={styles.radio}>
+                    <label htmlFor="role">Role:</label>
+                    <label className={styles.radioItem} htmlFor="doctorRole">Doctor</label>
                     <input
-                        className={styles.radio}
+                        className={styles.radioItem}
                         required
                         type="radio"
                         id="doctorRole"
@@ -54,9 +56,9 @@ export default function Page() {
                         onChange={(e) => setSpecialty(e.target.value)}
                         value={role}
                     />
-                    <label htmlFor="doctorRole">Doctor</label>
+                    <label className={styles.radioItem} htmlFor="patientRole">Patient</label>
                     <input
-                        className={styles.radio}
+                        className={styles.radioItem}
                         required
                         type="radio"
                         id="patientRole"
@@ -64,10 +66,9 @@ export default function Page() {
                         onChange={(e) => setSpecialty(e.target.value)}
                         value={role}
                     />
-                    <label htmlFor="patientRole">Patient</label>
+                    </div>
                     <button type="submit">Register</button>
                 </form>
-                <h3>Don't have an account?</h3> <a className={styles.a} href="/signup">Sign up here.</a>
             </div>
         </main>
     );
