@@ -51,7 +51,11 @@ public class DoctorController : ControllerBase
         catch (InvalidDataException e)
         {
             return new JsonResult(e.Message);
-        };
+        }
+        catch (InvalidOperationException e)
+        {
+            return new JsonResult(e.Message);
+        }
 
         return new JsonResult("Slot added successfuly.");
     }

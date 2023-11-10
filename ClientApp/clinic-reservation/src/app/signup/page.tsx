@@ -1,26 +1,74 @@
 "use client";
 
+import { useState } from "react";
+import styles from "./page.module.css";
+
 export default function Page() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+    const [specialty, setSpecialty] = useState("");
+    const [role, setRole] = useState("");
+
+
+    const handleSubmit = async (e) => {
+    };
+
 
     return (
-        <form>
-            <div className="form-group">
-                <label htmlFor="exampleInputEmail1">Email address</label>
-                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
-                    <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+        <main className={styles.main}>
+            <div className={styles.formdiv}>
+                <h1>Sign in</h1>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <label htmlFor="email">Email</label>
+                    <input
+                        required
+                        type="text"
+                        id="email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
+                    />
+                    <label htmlFor="password">Password</label>
+                    <input
+                        required
+                        type="password"
+                        id="password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
+                    />
+                    <label htmlFor="name">Name</label>
+                    <input
+                        required
+                        type="text"
+                        id="name"
+                        onChange={(e) => setName(e.target.value)}
+                        value={name}
+                    />
+                    <label htmlFor="role">Specialty</label>
+                    <input
+                        required
+                        type="radio"
+                        id="doctorRole"
+                        name="role"
+                        onChange={(e) => setSpecialty(e.target.value)}
+                        value={role}
+                    />
+                    <label htmlFor="doctorRole">Doctor</label>
+                    <input
+                        required
+                        type="radio"
+                        id="patientRole"
+                        name="role"
+                        onChange={(e) => setSpecialty(e.target.value)}
+                        value={role}
+                    />
+                    <label htmlFor="patientRole">Patient</label>
+                    <button type="submit">Sign in</button>
+                </form>
+                <h3>Don't have an account?</h3> <a className={styles.a} href="/signup">Sign up here.</a>
             </div>
-            <div className="form-group">
-                <label htmlFor="exampleInputPassword1">Password</label>
-                <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
-            </div>
-            <div className="form-group form-check">
-                <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-                    <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
-        </form>
+        </main>
     );
-
 }
 
 
