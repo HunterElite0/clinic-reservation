@@ -32,13 +32,19 @@ public class DoctorController : ControllerBase
     [HttpGet("slots", Name = "GetSlots")]
     public JsonResult GetSlots([FromQuery] int id)
     {
-        var results = _slotController.GetDoctorSlots(id);
-
-        if (results.Count == 0)
-        {
-            return new JsonResult("You have no open slots.");
+            try
+            {
+                var results = _slotController.GetDoctorSlots(id);
+                if (results.Count == 0)
+                {
+                    return new JsonResult("You have no open slots.");
+                }
+                return new JsonResult(results);
+            }
+            catch(InvalidDataException e)
+            {
+                return new JsonResult(e.Message);    
         }
-        return new JsonResult(results);
     }
 
     [HttpPost("slots", Name = "AddSlot")]

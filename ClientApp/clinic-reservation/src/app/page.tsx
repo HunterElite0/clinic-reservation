@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
+
 export default function Home() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -22,6 +23,9 @@ export default function Home() {
       body: JSON.stringify(account),
     });
     const data = await response.json();
+    if (data == "400 Bad Request") {
+      alert("Email or password is incorrect");
+    } else
     if (data === "Email or password is incorrect"){
       alert("Email or password is incorrect");
     }

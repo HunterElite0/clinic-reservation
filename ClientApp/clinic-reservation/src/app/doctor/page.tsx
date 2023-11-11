@@ -23,8 +23,8 @@ export default function Page() {
   });
 
   useEffect(() => {
-    const fetchAppointmets = async () => {
-      const fetchUrl: string = url + "?id=" + cookie.get("id");
+    const fetchSlots = async () => {
+      const fetchUrl: string = "http://localhost:5243/Doctor/slots?id=" + cookie.get("id");
       const response = await fetch(fetchUrl, {
         method: "GET",
         headers: {
@@ -32,15 +32,15 @@ export default function Page() {
         },
       });
       const data = await response.json();
-      if (data === "You have no appointments.") {
+      if (data === "You have no Slots.") {
         return;
       }
       for (var i = 0; i < data.length; i++) {
         jsonArray.push(data[i]);
       }
-      setAppointments(jsonArray);
+      setSlots(jsonArray);
     };
-    fetchAppointmets();
+    fetchSlots();
   }, []);
 
   const handleEdit = (did :any , aid :any) => { 
@@ -59,33 +59,32 @@ export default function Page() {
     const data = await response.json();
   };
 
+
   return (
     <main>
-      <h1>Hello User (user type: Patient)</h1>
-      <h2>My Appointments</h2>
+      <h1>Hello User (user type: Doctor)</h1>
+      <h2>My Slots</h2>
       <div>
         <table>
           <thead>
             <tr>
               <th>Appointment Date</th>
-              <th>Doctor</th>
               <th></th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(appointments) && appointments.length > 0 ? (
-              appointments.map((appointment) => (
-                <tr key={appointment.Id}>
-                  <td>{appointment.Slot.StartTime}</td>
-                  <td>Dr.{appointment.Slot.Doctor.Name}</td>
+            {Array.isArray(slots) && slots.length > 0 ? (
+              slots.map((slot) => (
+                <tr key={slot.Id}>
+                  <td>{slot.StartTime}</td>
                   <td>
-                    <button onClick={(e : any) => handleEdit(appointment.Slot.Doctor.Id , appointment.Id)}>
+                    <button onClick={(e : any) => handleEdit(slot.Doctor.Id , slot.Id)}>
                       Edit
                     </button>
                   </td>
                   <td>
-                    <button onClick={() => handleCancel(appointment.Id)}>
+                    <button onClick={() => handleCancel(slot.Id)}>
                       Cancel
                     </button>
                   </td>
@@ -93,7 +92,7 @@ export default function Page() {
               ))
             ) : (
               <tr>
-                <td colSpan={4}>No appointments available</td>
+                <td colSpan={4}>No Slots available</td>
               </tr>
             )}
           </tbody>

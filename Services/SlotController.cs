@@ -15,10 +15,17 @@ public class SlotController
 
     public ICollection<Slot> GetDoctorSlots(int AccountId)
     {
+
+        var accountQuery = _context.Account
+            .Where(a => a.Id == AccountId)
+            .FirstOrDefault() ?? throw new InvalidDataException("Account not found");   
+
         var query = _context.Slot
         .Where(s => s.Doctor.AccountId == AccountId)
         .Include(s => s.Appointment)
+        .Include(s => s.Doctor) 
         .ToList();
+        
         return query;
     }
 
