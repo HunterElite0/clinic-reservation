@@ -11,7 +11,8 @@ export default function Page() {
     const [role, setRole] = useState("");
 
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e : any) => {
+        e.preventDefault();
     };
 
 

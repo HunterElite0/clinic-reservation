@@ -1,6 +1,5 @@
 using clinic_reservation;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql;
 using Newtonsoft.Json.Serialization;
 using clinic_reservation.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,9 +11,10 @@ var serverVersion = ServerVersion.AutoDetect(connectionString);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Learn more about configuring Swagger/OpenAPI at https:/  /aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
 
 // Json serialiation
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
@@ -49,5 +49,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run(); 

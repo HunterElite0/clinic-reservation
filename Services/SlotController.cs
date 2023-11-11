@@ -28,7 +28,7 @@ public class SlotController
             .Where(d => d.AccountId == AccountId)
             .FirstOrDefault() ?? throw new InvalidDataException("Doctor not found");
         var slotQuery = _context.Slot
-            .Where(s => s.Doctor.Account.Id == AccountId
+            .Where(s => s.Doctor.AccountId == AccountId
             && s.StartTime == StartTime)
             .FirstOrDefault();
 
@@ -51,7 +51,7 @@ public class SlotController
         {
             StartTime = DateTime.Parse(StartTime).ToString("yyyy-MM-dd HH:mm"),
             IsBooked = false,
-            DoctorId = AccountId
+            DoctorId = doctorQuery.Id
         };
 
         _context.Slot.Add(slot);
@@ -81,7 +81,7 @@ public class SlotController
           .FirstOrDefault() ?? throw new InvalidDataException("Account not found");
 
         var slot = _context.Slot
-            .Where(s => s.Id == SlotId && s.Doctor.Account.Id == AccountId)
+            .Where(s => s.Id == SlotId && s.Doctor.AccountId == AccountId)
             .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
 
         try
