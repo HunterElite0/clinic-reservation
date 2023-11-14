@@ -41,12 +41,12 @@ export default function Page() {
     fetchAppointmets();
   }, []);
 
-  const handleEdit = (did :any , aid :any) => { 
+  const handleEdit = (did: any, aid: any) => {
     cookie.set("doctorId", did.toString());
     cookie.set("appointmentId", aid.toString());
     router.push("/patient/edit");
   };
-  const handleCancel = async (sid : number) => {
+  const handleCancel = async (sid: number) => {
     const fetchUrl: string = url + "?AccountId=" + cookie.get("id") + "&AppointmentId=" + sid;
     const response = await fetch(fetchUrl, {
       method: "DELETE",
@@ -79,7 +79,7 @@ export default function Page() {
                   <td>{appointment.Slot.StartTime}</td>
                   <td>Dr.{appointment.Slot.Doctor.Name}</td>
                   <td>
-                    <button onClick={(e : any) => handleEdit(appointment.Slot.Doctor.Id , appointment.Id)}>
+                    <button onClick={(e: any) => handleEdit(appointment.Slot.Doctor.Id, appointment.Id)}>
                       Edit
                     </button>
                   </td>
@@ -97,6 +97,9 @@ export default function Page() {
             )}
           </tbody>
         </table>
+        <div>
+          <button type="button" onClick={() => router.push('/patient/add')}>Make Appointment</button>
+        </div>
       </div>
     </main>
   );
