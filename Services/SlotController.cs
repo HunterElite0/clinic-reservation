@@ -18,14 +18,14 @@ public class SlotController
 
         var accountQuery = _context.Account
             .Where(a => a.Id == AccountId)
-            .FirstOrDefault() ?? throw new InvalidDataException("Account not found");   
+            .FirstOrDefault() ?? throw new InvalidDataException("Account not found");
 
         var query = _context.Slot
         .Where(s => s.Doctor.AccountId == AccountId)
         .Include(s => s.Appointment)
-        .Include(s => s.Doctor) 
+        .Include(s => s.Doctor)
         .ToList();
-        
+
         return query;
     }
 
@@ -102,5 +102,19 @@ public class SlotController
         _context.SaveChanges();
     }
 
+    public ICollection<Slot> GetAvailableSlots(int AccountId)
+    {
+        var slots = GetDoctorSlots(AccountId);
+        slots = slots.Where(s => s.IsBooked == false)
+        .Select
+        (
+        s => new Slot
+        {
+            Id = s.Id,
+            StartTime = s.StartTime,
+        })
+        .ToList();
+        return slots;
+    }
 
 }

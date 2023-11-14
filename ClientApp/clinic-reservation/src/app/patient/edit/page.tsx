@@ -29,7 +29,7 @@ export default function EditSlot() {
 
   useEffect(() => {
     const fetchSlots = async () => {
-      const fetchUrl: string = "http://localhost:5243/Doctor/slots?id=" + cookie.get("doctorId");
+      const fetchUrl: string = "http://localhost:5243/Doctor/empty-slots?id=" + cookie.get("doctorId");
       const response = await fetch(fetchUrl, {
         method: "GET",
         headers: {
@@ -61,7 +61,6 @@ export default function EditSlot() {
       },
     });
     const data = await response.json();
-    console.log(data);
     router.push("/patient");
   }
 
@@ -70,7 +69,7 @@ export default function EditSlot() {
         <h1>Edit Slot</h1>
         <div className={styles.formDiv}>
           <form onSubmit={handleSubmit}>
-            <label htmlFor="slot">Select a slot:</label>
+            <label htmlFor="slot">Select a differnt slot:</label>
             <select name="slot" id="slot">
               {slots.map((slot) => (
                 <option key={slot.Id} value={slot.Id}>
