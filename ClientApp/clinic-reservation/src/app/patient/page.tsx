@@ -8,17 +8,9 @@ export default function Page() {
   var cookie = require("cookie-cutter");
   const router = useRouter();
   const url: string = "http://localhost:5243/Patient/appointments";
-  const [account, setAccount] = useState<
-    { id: number; email: string; role: string }[]>([]);
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
-
-  account.push({
-    id: cookie.get("id"),
-    email: cookie.get("email"),
-    role: cookie.get("role"),
-  });
 
   useEffect(() => {
     const fetchAppointmets = async () => {
@@ -55,8 +47,13 @@ export default function Page() {
       },
     });
     const data = await response.json();
-    router.push('/patient');
+    alert(data)
+    window.location.reload();
   };
+
+  const handleLogout = async () => {
+    cookie.clea
+  }
 
   return (
     <main>
@@ -101,6 +98,7 @@ export default function Page() {
           <button type="button" onClick={() => router.push('/patient/add')}>Make Appointment</button>
         </div>
       </div>
+      <button type="button" onClick={(e) => handleCancel} >Logout</button>
     </main>
   );
 }

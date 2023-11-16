@@ -1,10 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import Popup from "reactjs-popup";
 
 export default function Page() {
   var cookie = require("cookie-cutter");

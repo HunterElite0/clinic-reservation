@@ -15,16 +15,9 @@ export default function EditSlot() {
   var cookie = require("cookie-cutter");
   const router = useRouter();
   const url: string = "http://localhost:5243/Patient/appointments";
-  const [account, setAccount] = useState<{ id: number; email: string; role: string }[]>([]);
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
-
-  account.push({
-    id: cookie.get("id"),
-    email: cookie.get("email"),
-    role: cookie.get("role"),
-  });
 
 
   useEffect(() => {

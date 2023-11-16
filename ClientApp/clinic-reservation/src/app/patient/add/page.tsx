@@ -6,20 +6,9 @@ import { useEffect, useState } from "react";
 export default function Page() {
     var cookie = require("cookie-cutter");
     const router = useRouter();
-    const [account, setAccount] = useState<
-        { id: number; email: string; role: string }[]>([]);
     const [slots, setSlots] = useState<any[]>([]);
     const [doctors, setDoctors] = useState<any[]>([]);
-    const [slotId, setSlotId] = useState("");
-    const [accountId, setAccountId] = useState("");
     
-
-    account.push({
-        id: cookie.get("id"),
-        email: cookie.get("email"),
-        role: cookie.get("role"),
-    });
-
     useEffect(() => {
         const getDoctors = async () => {
             // http://localhost:5243/Doctor/doctors
@@ -50,7 +39,6 @@ export default function Page() {
             return;
         }
         setSlots(data);
-        setAccountId(id);
         document.getElementById('slot')?.removeAttribute("disabled");
     } // You have no open slots.
 
@@ -59,15 +47,15 @@ export default function Page() {
     const handleSubmit = async (e:any) => 
     {
         e.preventDefault();
-        const response  = await fetch('http://localhost:5243/Patient/appointments?AccountId=' + accountId + '&SlotId=' + slotId , {
+        const response  = await fetch('http://localhost:5243/Patient/appointments?AccountId=' + cookie.get("id") + '&SlotId=' + e.target.slot.value , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
         });
         const data = await response.json();
-        console.log(data);
-
+        alert(data);
+        router.push('/patient')
     }
 
     return (
@@ -84,8 +72,7 @@ export default function Page() {
                     ))}
                 </select>
                 <label htmlFor="slot">Slot</label>
-                <select disabled name="slot" id="slot" defaultValue={"No available slots"} onChange={(_) => setSlotId}>
-
+                <select disabled name="slot" id="slot" defaultValue={"No available slots"}>
                     {Array.isArray(slots) && slots.length > 0 ? (
                         slots.map((slot) => (
                             <option key={slot.Id} value={slot.Id}>
@@ -98,6 +85,7 @@ export default function Page() {
                         </option>
                     )}
                 </select>
+                <button type="submit">Make Appointment</button>
             </form>
         </main>
     )
