@@ -1,8 +1,3 @@
-// create a page to edit a slot by fetching all available slots and displaying them in a form
-// The form should be pre-populated with the current slot information
-// The form should be submitted to the edit endpoint
-// The edit endpoint should return the updated slot information
-// The page should redirect to the patient page
 "use client";
 
 

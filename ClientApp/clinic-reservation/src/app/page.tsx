@@ -14,6 +14,8 @@ export default function Home() {
 
   const handleSubmit = async (e : any) => {
     e.preventDefault();
+    setEmail(email.replace(/\s/g, ''));
+    setPassword(password.replace(/\s/g, ''));
     const account = { email, password };
     const response = await fetch("http://localhost:5243/Account/signin", {
       method: "POST",
@@ -31,12 +33,13 @@ export default function Home() {
     }
     else{
       alert("Logged in successfully");
-      Cookies.set('id', data.Id)
-      Cookies.set('email', data.Email)
-      Cookies.set('role', data.Role)
-      Cookies.set('password',data.Password)
-      if(data.Role === 0){router.push("/doctor")}
-      else{router.push("/patient")}
+      Cookies.set('id', data.Account.Id)
+      Cookies.set('email', data.Account.Email)
+      Cookies.set('role', data.Account.Role)
+      Cookies.set('name', data.Name)
+      if(data.Account.Role === 0){router.push("/doctor")}
+      else if(data.Account.Role === 1){router.push("/patient")}
+      else{alert("Invalid User")}
     }
   }
   return (

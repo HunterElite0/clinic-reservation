@@ -55,6 +55,8 @@ export default function Page() {
         });
         const data = await response.json();
         alert(data);
+        if(data === "Account not found" || data === "Slot not found" || data === "Slot is already booked.")
+        {return;}
         router.push('/patient')
     }
 

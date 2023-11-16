@@ -8,5 +8,4 @@ public class AccountInformationDto
     public string Speciality {get; set;}
     public Account Account {get; set;}
 
-
 }

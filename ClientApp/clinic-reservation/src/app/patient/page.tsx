@@ -8,12 +8,13 @@ export default function Page() {
   const Cookies = require('js-cookie')
   const router = useRouter();
   const url: string = "http://localhost:5243/Patient/appointments";
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
 
   useEffect(() => {
+    setName(Cookies.get("name"));
     const fetchAppointmets = async () => {
       const fetchUrl: string = url + "?id=" + Cookies.get("id");
       const response = await fetch(fetchUrl, {
@@ -30,7 +31,6 @@ export default function Page() {
         jsonArray.push(data[i]);
       }
       setAppointments(jsonArray);
-      setName(data[0].Patient.Name)
     };
     fetchAppointmets();
   }, []);
@@ -57,7 +57,6 @@ export default function Page() {
     Cookies.remove('id');
     Cookies.remove('email');
     Cookies.remove('role');
-    Cookies.remove('password');
     router.push('/');
   }
 

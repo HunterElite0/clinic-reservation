@@ -2,19 +2,19 @@
 
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
-  const Cookies = require('js-cookie')
+  const Cookies = require("js-cookie");
   const router = useRouter();
-  const [appointments, setAppointments] = useState<any[]>([]);
   const [name, setName] = useState("");
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
 
 
   useEffect(() => {
-    const fetchSlots = async () => {
+    setName(Cookies.get("name"));
+    const fetchAppointmets = async () => {
       const fetchUrl: string = "http://localhost:5243/Doctor/slots?id=" + Cookies.get("id");
       const response = await fetch(fetchUrl, {
         method: "GET",
@@ -23,7 +23,7 @@ export default function Page() {
         },
       });
       const data = await response.json();
-      if (data === "You have no Slots.") {
+      if (data === "You have no open slots.") {
         return;
       }
       for (var i = 0; i < data.length; i++) {
@@ -31,37 +31,53 @@ export default function Page() {
       }
       setSlots(jsonArray);
     };
-    fetchSlots();
+    fetchAppointmets();
   }, []);
 
-  const handleEdit = (did :any , aid :any) => { 
-    Cookies.set("doctorId", did.toString());
-    Cookies.set("appointmentId", aid.toString());
+  const handleEdit = (sid: any) => {
+    Cookies.set("slotId", sid.toString());
     router.push("/doctor/edit");
   };
-  const handleCancel = async (sid : number) => {
-    const response = await fetch('http://localhost:5243/Doctor/slots?AccountId=' + Cookies.get('id') + '&SlotId=' + sid, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const handleCancel = async (sid: number) => {
+    const response = await fetch(
+      "http://localhost:5243/Doctor/slots?AccountId=" +
+        Cookies.get("id") +
+        "&SlotId=" +
+        sid,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await response.json();
     alert(data);
     window.location.reload();
   };
 
+  const handleNew = () => {
+    router.push("/doctor/new");
+  };
+
+  const handleLogout = () => {
+    Cookies.remove("id");
+    Cookies.remove("email");
+    Cookies.remove("role");
+    router.push("/");
+  }
+
   // http://localhost:5243/Doctor/slots?AccountId=1&SlotId=1
 
   return (
     <main>
-      <h1>Hello User (user type: Doctor)</h1>
+      <h1>Hello {name} (user type: Doctor)</h1>
       <h2>My Slots</h2>
       <div>
         <table>
           <thead>
             <tr>
-              <th>Appointment Date</th>
+              <th>Slot Date</th>
               <th></th>
               <th></th>
             </tr>
@@ -72,7 +88,9 @@ export default function Page() {
                 <tr key={slot.Id}>
                   <td>{slot.StartTime}</td>
                   <td>
-                    <button onClick={(e : any) => handleEdit(slot.Doctor.Id , slot.Id)}>
+                    <button
+                      onClick={(e: any) => handleEdit(slot.Id)}
+                    >
                       Edit
                     </button>
                   </td>
@@ -91,6 +109,11 @@ export default function Page() {
           </tbody>
         </table>
       </div>
+      <button type="button" onClick={(_) => handleNew()}>
+        Open new slot
+      </button>
+      <br/>
+      <button type="button" onClick={(_) => handleLogout()} >Logout</button>
     </main>
   );
 }

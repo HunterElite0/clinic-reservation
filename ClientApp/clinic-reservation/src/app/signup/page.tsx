@@ -16,7 +16,7 @@ export default function Page() {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         
-        setName(name.replace(RegExp, ''));
+        setName(name.replace(/\s/g, ''));
         const response = await fetch("http://localhost:5243/Account/signup", {
             method: "POST",
             headers: {

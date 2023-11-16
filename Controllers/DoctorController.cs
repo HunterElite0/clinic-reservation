@@ -48,7 +48,7 @@ public class DoctorController : ControllerBase
     }
 
     [HttpPost("slots", Name = "AddSlot")]
-    public JsonResult AddSlot(int AccountId, string StartDate)
+    public JsonResult AddSlot(int AccountId, [FromBody]string StartDate)
     {
         try
         {
@@ -82,7 +82,7 @@ public class DoctorController : ControllerBase
     }
 
     [HttpPut("slots", Name = "UpdateSlot")]
-    public JsonResult UpdateSlot(int AccountId, int SlotId, string StartTime)
+    public JsonResult UpdateSlot(int AccountId, int SlotId,[FromBody] string StartTime)
     {
         try
         {
