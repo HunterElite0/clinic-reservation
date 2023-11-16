@@ -81,12 +81,35 @@ public class AccountController : ControllerBase
         var query = _context.Account
         .Where(a => a.Email == account.Email && a.Password == account.Password)
         .FirstOrDefault();
+        var nameQuery = "";
 
         if (query == null)
         {
             return new JsonResult("Email or password is incorrect");
         }
 
-        return new JsonResult(query);
+        if(query?.Role == Role.Doctor)
+        {
+            nameQuery = _context.Doctor
+            .Where(d => d.AccountId == query.Id)
+            .Select(d => d.Name)
+            .FirstOrDefault();
+        }
+        else if(query?.Role == Role.Patient)
+        {
+            nameQuery = _context.Patient
+            .Where(p => p.AccountId == query.Id)
+            .Select(p => p.Name)
+            .FirstOrDefault();
+        }
+
+        var accountDto = new AccountDto
+        {
+            Account = query!,
+            Name = nameQuery!.ToString(),
+        };
+
+
+        return new JsonResult(accountDto);
     }
 }

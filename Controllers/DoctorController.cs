@@ -48,7 +48,7 @@ public class DoctorController : ControllerBase
     }
 
     [HttpPost("slots", Name = "AddSlot")]
-    public JsonResult AddSlot(int AccountId, string StartDate)
+    public JsonResult AddSlot(int AccountId, [FromBody]string StartDate)
     {
         try
         {
@@ -82,7 +82,7 @@ public class DoctorController : ControllerBase
     }
 
     [HttpPut("slots", Name = "UpdateSlot")]
-    public JsonResult UpdateSlot(int AccountId, int SlotId, string StartTime)
+    public JsonResult UpdateSlot(int AccountId, int SlotId,[FromBody] string StartTime)
     {
         try
         {
@@ -94,6 +94,24 @@ public class DoctorController : ControllerBase
         }
 
         return new JsonResult("Slot updated successfuly.");
+    }
+
+    [HttpGet("empty-slots", Name = "GetAvailableSlots")]
+    public JsonResult GetAvailableSlots([FromQuery] int id)
+    {
+        try
+        {
+            var results = _slotController.GetAvailableSlots(id);
+            if (results.Count == 0)
+            {
+                return new JsonResult("You have no open slots.");
+            }
+            return new JsonResult(results);
+        }
+        catch (InvalidDataException e)
+        {
+            return new JsonResult(e.Message);
+        }
     }
 
 }

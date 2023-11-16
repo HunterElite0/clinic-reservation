@@ -1,8 +1,3 @@
-// create a page to edit a slot by fetching all available slots and displaying them in a form
-// The form should be pre-populated with the current slot information
-// The form should be submitted to the edit endpoint
-// The edit endpoint should return the updated slot information
-// The page should redirect to the patient page
 "use client";
 
 
@@ -11,25 +6,17 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
 export default function EditSlot() {
-
-  var cookie = require("cookie-cutter");
+  const Cookies = require('js-cookie')
   const router = useRouter();
   const url: string = "http://localhost:5243/Patient/appointments";
-  const [account, setAccount] = useState<{ id: number; email: string; role: string }[]>([]);
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
 
-  account.push({
-    id: cookie.get("id"),
-    email: cookie.get("email"),
-    role: cookie.get("role"),
-  });
-
 
   useEffect(() => {
     const fetchSlots = async () => {
-      const fetchUrl: string = "http://localhost:5243/Doctor/slots?id=" + cookie.get("doctorId");
+      const fetchUrl: string = "http://localhost:5243/Doctor/empty-slots?id=" + Cookies.get("doctorId");
       const response = await fetch(fetchUrl, {
         method: "GET",
         headers: {
@@ -53,7 +40,7 @@ export default function EditSlot() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const url : string = "http://localhost:5243/Patient/appointments?AccountId=" + cookie.get("id") + "&AppointmentId=" + cookie.get("appointmentId") + "&SlotId=" + e.target.slot.value;
+    const url : string = "http://localhost:5243/Patient/appointments?AccountId=" + Cookies.get("id") + "&AppointmentId=" + Cookies.get("appointmentId") + "&SlotId=" + e.target.slot.value;
     const response = await fetch(url, {
       method: "PUT",
       headers: {
@@ -61,7 +48,8 @@ export default function EditSlot() {
       },
     });
     const data = await response.json();
-    console.log(data);
+    Cookies.remove('appointmentId');
+    Cookies.remove('doctorId');
     router.push("/patient");
   }
 
@@ -70,7 +58,7 @@ export default function EditSlot() {
         <h1>Edit Slot</h1>
         <div className={styles.formDiv}>
           <form onSubmit={handleSubmit}>
-            <label htmlFor="slot">Select a slot:</label>
+            <label htmlFor="slot">Select a differnt slot:</label>
             <select name="slot" id="slot">
               {slots.map((slot) => (
                 <option key={slot.Id} value={slot.Id}>

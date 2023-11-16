@@ -1,30 +1,22 @@
 "use client";
 
-import Image from "next/image";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
-import Popup from "reactjs-popup";
+import { useEffect, useState } from "react";
 
 export default function Page() {
-  var cookie = require("cookie-cutter");
+  const Cookies = require('js-cookie')
   const router = useRouter();
   const url: string = "http://localhost:5243/Patient/appointments";
-  const [account, setAccount] = useState<
-    { id: number; email: string; role: string }[]>([]);
+  const [name, setName] = useState('');
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
 
-  account.push({
-    id: cookie.get("id"),
-    email: cookie.get("email"),
-    role: cookie.get("role"),
-  });
-
   useEffect(() => {
+    setName(Cookies.get("name"));
     const fetchAppointmets = async () => {
-      const fetchUrl: string = url + "?id=" + cookie.get("id");
+      const fetchUrl: string = url + "?id=" + Cookies.get("id");
       const response = await fetch(fetchUrl, {
         method: "GET",
         headers: {
@@ -43,13 +35,13 @@ export default function Page() {
     fetchAppointmets();
   }, []);
 
-  const handleEdit = (did :any , aid :any) => { 
-    cookie.set("doctorId", did.toString());
-    cookie.set("appointmentId", aid.toString());
+  const handleEdit = (did: any, aid: any) => {
+    Cookies.set("doctorId", did.toString());
+    Cookies.set("appointmentId", aid.toString());
     router.push("/patient/edit");
   };
-  const handleCancel = async (sid : number) => {
-    const fetchUrl: string = url + "?AccountId=" + cookie.get("id") + "&AppointmentId=" + sid;
+  const handleCancel = async (sid: number) => {
+    const fetchUrl: string = url + "?AccountId=" + Cookies.get("id") + "&AppointmentId=" + sid;
     const response = await fetch(fetchUrl, {
       method: "DELETE",
       headers: {
@@ -57,11 +49,20 @@ export default function Page() {
       },
     });
     const data = await response.json();
+    alert(data)
+    window.location.reload();
   };
+
+  const handleLogout = () => {
+    Cookies.remove('id');
+    Cookies.remove('email');
+    Cookies.remove('role');
+    router.push('/');
+  }
 
   return (
     <main>
-      <h1>Hello User (user type: Patient)</h1>
+      <h1>Hello {name} (user type: Patient)</h1>
       <h2>My Appointments</h2>
       <div>
         <table>
@@ -80,7 +81,7 @@ export default function Page() {
                   <td>{appointment.Slot.StartTime}</td>
                   <td>Dr.{appointment.Slot.Doctor.Name}</td>
                   <td>
-                    <button onClick={(e : any) => handleEdit(appointment.Slot.Doctor.Id , appointment.Id)}>
+                    <button onClick={(e: any) => handleEdit(appointment.Slot.Doctor.Id, appointment.Id)}>
                       Edit
                     </button>
                   </td>
@@ -98,7 +99,11 @@ export default function Page() {
             )}
           </tbody>
         </table>
+        <div>
+          <button type="button" onClick={() => router.push('/patient/add')}>Make Appointment</button>
+        </div>
       </div>
+      <button type="button" onClick={(_) => handleLogout()} >Logout</button>
     </main>
   );
 }

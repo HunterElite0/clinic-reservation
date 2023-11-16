@@ -3,18 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 using clinic_reservation.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using clinic_reservation.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var serverVersion = ServerVersion.AutoDetect(connectionString);
-
+var broker = new RabbitMq("Test");
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https:/  /aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSignalR();
 
 // Json serialiation
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
@@ -49,6 +49,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run(); 
