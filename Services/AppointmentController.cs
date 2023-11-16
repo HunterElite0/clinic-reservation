@@ -21,6 +21,7 @@ public class AppointmentController
         .Where(a => a.Patient.AccountId == Id)
         .Include(a => a.Slot)
         .Include(s => s.Slot.Doctor)
+        .Include(s => s.Patient)
         .ToList();
         return query;
     }

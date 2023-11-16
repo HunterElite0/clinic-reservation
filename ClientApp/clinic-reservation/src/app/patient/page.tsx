@@ -8,6 +8,7 @@ export default function Page() {
   const Cookies = require('js-cookie')
   const router = useRouter();
   const url: string = "http://localhost:5243/Patient/appointments";
+  const [name, setName] = useState("");
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
@@ -29,6 +30,7 @@ export default function Page() {
         jsonArray.push(data[i]);
       }
       setAppointments(jsonArray);
+      setName(data[0].Patient.Name)
     };
     fetchAppointmets();
   }, []);
@@ -61,7 +63,7 @@ export default function Page() {
 
   return (
     <main>
-      <h1>Hello User (user type: Patient)</h1>
+      <h1>Hello {name} (user type: Patient)</h1>
       <h2>My Appointments</h2>
       <div>
         <table>
