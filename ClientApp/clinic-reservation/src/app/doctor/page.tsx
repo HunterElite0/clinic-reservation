@@ -7,8 +7,8 @@ import { FormEvent, useEffect, useState } from "react";
 export default function Page() {
   const Cookies = require('js-cookie')
   const router = useRouter();
-  const url: string = "http://localhost:5243/Patient/appointments";
   const [appointments, setAppointments] = useState<any[]>([]);
+  const [name, setName] = useState("");
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
 
@@ -37,19 +37,21 @@ export default function Page() {
   const handleEdit = (did :any , aid :any) => { 
     Cookies.set("doctorId", did.toString());
     Cookies.set("appointmentId", aid.toString());
-    router.push("/patient/edit");
+    router.push("/doctor/edit");
   };
   const handleCancel = async (sid : number) => {
-    const fetchUrl: string = url + "?AccountId=" + Cookies.get("id") + "&AppointmentId=" + sid;
-    const response = await fetch(fetchUrl, {
+    const response = await fetch('http://localhost:5243/Doctor/slots?AccountId=' + Cookies.get('id') + '&SlotId=' + sid, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     });
     const data = await response.json();
+    alert(data);
+    window.location.reload();
   };
 
+  // http://localhost:5243/Doctor/slots?AccountId=1&SlotId=1
 
   return (
     <main>

@@ -15,7 +15,9 @@ export default function Page() {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:5243/Account/signup",{
+        
+        setName(name.replace(RegExp, ''));
+        const response = await fetch("http://localhost:5243/Account/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -24,18 +26,18 @@ export default function Page() {
                 "name": name,
                 "speciality": speciality,
                 "account": {
-                  "email": email,
-                  "password": password,
-                  "role": role === "doctor" ? 0 : 1
+                    "email": email,
+                    "password": password,
+                    "role": role === "doctor" ? 0 : 1
                 }
-              }),
+            }),
         });
         const data = await response.json();
-        if(data === "Email already exists") {
+        if (data === "Email already exists") {
             alert("Email already exists");
             return;
         }
-        else if(data === "Error creating account") {
+        else if (data === "Error creating account") {
             alert("Error creating account");
             return;
         }
@@ -43,7 +45,7 @@ export default function Page() {
         router.push("/");
     };
 
-    const roleChange = (e : any) => {
+    const roleChange = (e: any) => {
         if (e.target.value === "doctor") {
             document.getElementById("ifDoctor")!.style.display = "block";
         } else {
@@ -51,7 +53,7 @@ export default function Page() {
         }
     }
 
-    const twoCalls = (e : any) => {
+    const twoCalls = (e: any) => {
         setRole(e.target.value);
         roleChange(e);
     }
@@ -114,8 +116,8 @@ export default function Page() {
                             id="speciality"
                             type="text"
                             name="speciality"
-                            onChange={(e) => setSpeciality(e.target.value)} 
-                            value={speciality}/>
+                            onChange={(e) => setSpeciality(e.target.value)}
+                            value={speciality} />
                     </div>
                     <br />
                     <button type="submit">Register</button>
