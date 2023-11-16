@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using clinic_reservation.Hubs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace clinic_reservation;
@@ -64,7 +65,10 @@ public class PatientController : ControllerBase
             return new JsonResult(e.Message);
         }
 
+        string message = $"patientAccountId: {AccountId}, Operation: ReservationCreated";
+        var sender = new RabbitMq(message);
         return new JsonResult("Appointment added successfuly.");
+
     }
     [HttpDelete("appointments", Name = "CancelAppointment")]
     public JsonResult CancelAppointment(int AccountId, int AppointmentId)

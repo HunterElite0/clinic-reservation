@@ -27,11 +27,11 @@ public class RabbitMq{
 
      
 
-        byte[] bytes = Encoding.UTF8.GetBytes("Hello World");
+        byte[] bytes = Encoding.UTF8.GetBytes(message);
         channel.BasicPublish(exchangeName, routingKey, null, bytes); 
 
-        // channel.Close();
-        // connection.Close();
+        channel.Close();
+        connection.Close();
     }
 
 }
