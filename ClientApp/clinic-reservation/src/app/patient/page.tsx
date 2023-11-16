@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
-  var cookie = require("cookie-cutter");
+  const Cookies = require('js-cookie')
   const router = useRouter();
   const url: string = "http://localhost:5243/Patient/appointments";
   const [appointments, setAppointments] = useState<any[]>([]);
@@ -14,7 +14,7 @@ export default function Page() {
 
   useEffect(() => {
     const fetchAppointmets = async () => {
-      const fetchUrl: string = url + "?id=" + cookie.get("id");
+      const fetchUrl: string = url + "?id=" + Cookies.get("id");
       const response = await fetch(fetchUrl, {
         method: "GET",
         headers: {
@@ -34,12 +34,12 @@ export default function Page() {
   }, []);
 
   const handleEdit = (did: any, aid: any) => {
-    cookie.set("doctorId", did.toString());
-    cookie.set("appointmentId", aid.toString());
+    Cookies.set("doctorId", did.toString());
+    Cookies.set("appointmentId", aid.toString());
     router.push("/patient/edit");
   };
   const handleCancel = async (sid: number) => {
-    const fetchUrl: string = url + "?AccountId=" + cookie.get("id") + "&AppointmentId=" + sid;
+    const fetchUrl: string = url + "?AccountId=" + Cookies.get("id") + "&AppointmentId=" + sid;
     const response = await fetch(fetchUrl, {
       method: "DELETE",
       headers: {
@@ -51,8 +51,12 @@ export default function Page() {
     window.location.reload();
   };
 
-  const handleLogout = async () => {
-    cookie.clea
+  const handleLogout = () => {
+    Cookies.remove('id');
+    Cookies.remove('email');
+    Cookies.remove('role');
+    Cookies.remove('password');
+    router.push('/');
   }
 
   return (
@@ -98,7 +102,7 @@ export default function Page() {
           <button type="button" onClick={() => router.push('/patient/add')}>Make Appointment</button>
         </div>
       </div>
-      <button type="button" onClick={(e) => handleCancel} >Logout</button>
+      <button type="button" onClick={(_) => handleLogout()} >Logout</button>
     </main>
   );
 }

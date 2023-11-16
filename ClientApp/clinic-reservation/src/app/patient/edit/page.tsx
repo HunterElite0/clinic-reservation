@@ -11,8 +11,7 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
 export default function EditSlot() {
-
-  var cookie = require("cookie-cutter");
+  const Cookies = require('js-cookie')
   const router = useRouter();
   const url: string = "http://localhost:5243/Patient/appointments";
   const [appointments, setAppointments] = useState<any[]>([]);
@@ -22,7 +21,7 @@ export default function EditSlot() {
 
   useEffect(() => {
     const fetchSlots = async () => {
-      const fetchUrl: string = "http://localhost:5243/Doctor/empty-slots?id=" + cookie.get("doctorId");
+      const fetchUrl: string = "http://localhost:5243/Doctor/empty-slots?id=" + Cookies.get("doctorId");
       const response = await fetch(fetchUrl, {
         method: "GET",
         headers: {
@@ -46,7 +45,7 @@ export default function EditSlot() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const url : string = "http://localhost:5243/Patient/appointments?AccountId=" + cookie.get("id") + "&AppointmentId=" + cookie.get("appointmentId") + "&SlotId=" + e.target.slot.value;
+    const url : string = "http://localhost:5243/Patient/appointments?AccountId=" + Cookies.get("id") + "&AppointmentId=" + Cookies.get("appointmentId") + "&SlotId=" + e.target.slot.value;
     const response = await fetch(url, {
       method: "PUT",
       headers: {
@@ -54,6 +53,8 @@ export default function EditSlot() {
       },
     });
     const data = await response.json();
+    Cookies.remove('appointmentId');
+    Cookies.remove('doctorId');
     router.push("/patient");
   }
 

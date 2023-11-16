@@ -5,24 +5,17 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
-  var cookie = require("cookie-cutter");
+  const Cookies = require('js-cookie')
   const router = useRouter();
   const url: string = "http://localhost:5243/Patient/appointments";
-  const [account, setAccount] = useState<
-    { id: number; email: string; role: string }[]>([]);
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
 
-  account.push({
-    id: cookie.get("id"),
-    email: cookie.get("email"),
-    role: cookie.get("role"),
-  });
 
   useEffect(() => {
     const fetchSlots = async () => {
-      const fetchUrl: string = "http://localhost:5243/Doctor/slots?id=" + cookie.get("id");
+      const fetchUrl: string = "http://localhost:5243/Doctor/slots?id=" + Cookies.get("id");
       const response = await fetch(fetchUrl, {
         method: "GET",
         headers: {
@@ -42,12 +35,12 @@ export default function Page() {
   }, []);
 
   const handleEdit = (did :any , aid :any) => { 
-    cookie.set("doctorId", did.toString());
-    cookie.set("appointmentId", aid.toString());
+    Cookies.set("doctorId", did.toString());
+    Cookies.set("appointmentId", aid.toString());
     router.push("/patient/edit");
   };
   const handleCancel = async (sid : number) => {
-    const fetchUrl: string = url + "?AccountId=" + cookie.get("id") + "&AppointmentId=" + sid;
+    const fetchUrl: string = url + "?AccountId=" + Cookies.get("id") + "&AppointmentId=" + sid;
     const response = await fetch(fetchUrl, {
       method: "DELETE",
       headers: {

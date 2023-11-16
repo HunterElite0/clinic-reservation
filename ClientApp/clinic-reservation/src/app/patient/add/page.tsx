@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
-    var cookie = require("cookie-cutter");
+    const Cookies = require('js-cookie')
     const router = useRouter();
     const [slots, setSlots] = useState<any[]>([]);
     const [doctors, setDoctors] = useState<any[]>([]);
@@ -47,7 +47,7 @@ export default function Page() {
     const handleSubmit = async (e:any) => 
     {
         e.preventDefault();
-        const response  = await fetch('http://localhost:5243/Patient/appointments?AccountId=' + cookie.get("id") + '&SlotId=' + e.target.slot.value , {
+        const response  = await fetch('http://localhost:5243/Patient/appointments?AccountId=' + Cookies.get("id") + '&SlotId=' + e.target.slot.value , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

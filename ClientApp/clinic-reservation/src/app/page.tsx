@@ -10,7 +10,7 @@ export default function Home() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  var cookie = require('cookie-cutter')
+  const Cookies = require('js-cookie')
 
   const handleSubmit = async (e : any) => {
     e.preventDefault();
@@ -31,10 +31,10 @@ export default function Home() {
     }
     else{
       alert("Logged in successfully");
-      cookie.set('id', data.Id)
-      cookie.set('email', data.Email)
-      cookie.set('role', data.Role)
-      cookie.set('password',data.Password)
+      Cookies.set('id', data.Id)
+      Cookies.set('email', data.Email)
+      Cookies.set('role', data.Role)
+      Cookies.set('password',data.Password)
       if(data.Role === 0){router.push("/doctor")}
       else{router.push("/patient")}
     }
