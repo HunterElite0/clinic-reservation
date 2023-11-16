@@ -10,7 +10,9 @@ export default function Page() {
         { id: number; email: string; role: string }[]>([]);
     const [slots, setSlots] = useState<any[]>([]);
     const [doctors, setDoctors] = useState<any[]>([]);
-    const jsonArray: any = [];
+    const [slotId, setSlotId] = useState("");
+    const [accountId, setAccountId] = useState("");
+    
 
     account.push({
         id: cookie.get("id"),
@@ -48,15 +50,30 @@ export default function Page() {
             return;
         }
         setSlots(data);
+        setAccountId(id);
+        document.getElementById('slot')?.removeAttribute("disabled");
     } // You have no open slots.
 
-    document.getElementById('slot')?.removeAttribute("disabled");
 
+
+    const handleSubmit = async (e:any) => 
+    {
+        e.preventDefault();
+        const response  = await fetch('http://localhost:5243/Patient/appointments?AccountId=' + accountId + '&SlotId=' + slotId , {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        console.log(data);
+
+    }
 
     return (
         <main>
             <h1>Make appointment</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="doctor">Doctor</label>
                 <select name="doctor" id="doctor" defaultValue={"Select a doctor"} onChange={(e) => getSlots(e.target.value)}>
                     <option disabled >Select a doctor</option>
@@ -67,7 +84,7 @@ export default function Page() {
                     ))}
                 </select>
                 <label htmlFor="slot">Slot</label>
-                <select disabled name="slot" id="slot" defaultValue={"No available slots"}>
+                <select disabled name="slot" id="slot" defaultValue={"No available slots"} onChange={(_) => setSlotId}>
 
                     {Array.isArray(slots) && slots.length > 0 ? (
                         slots.map((slot) => (
