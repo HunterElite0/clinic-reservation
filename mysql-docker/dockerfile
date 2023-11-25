@@ -1,0 +1,8 @@
+FROM mysql:8.0.35-debian
+
+RUN chown -R mysql:root /var/lib/mysql/
+
+ENV MYSQL_ROOT_PASSWORD  Yassoo_13
+EXPOSE 3306
+ENTRYPOINT [ "mysql","-p"]
+CMD [ "MYSQL_ROOT_PASSWORD" ]
