@@ -1,15 +1,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+EXPOSE 5243
+EXPOSE 8080
 COPY . /src
 WORKDIR /src
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="$PATH:/root/.dotnet/tools"
-RUN dotnet build "clinic-reservation.csproj" -c Release -o /app/build
+ENV ASPNETCORE_URLS=http://+:5243
+ENV ASPNETCORE_ENVIRONMENT=”development”
 
-FROM build AS final
-WORKDIR /src
-COPY --from=build /app/build .
-EXPOSE 5243
-ENTRYPOINT [ "dotnet","ef database update","&&","dotnet","run" ]
+
+# ENTRYPOINT [ "dotnet ef database update; dotnet run" ]
 
 # docker pull mcr.microsoft.com/dotnet/sdk
 
