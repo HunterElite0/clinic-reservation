@@ -6,6 +6,7 @@ namespace clinic_reservation;
 
 public class ClinicContext : DbContext
 {
+    public ClinicContext(){}
     public ClinicContext(DbContextOptions<ClinicContext> options) : base(options)
     {
     }

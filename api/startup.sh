@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/env sh
 
-cd ../src
+cd /src
 dotnet ef database update
-cd ../app/publish
+cd /app/publish
 dotnet clinic-reservation.dll --environment="development"
