@@ -11,9 +11,9 @@ export default function Page() {
     
     useEffect(() => {
         const getDoctors = async () => {
-            // http://localhost:5243/Doctor/doctors
+            // http://api:8080/Doctor/doctors
 
-            const response = await fetch("http://localhost:5243/Doctor/doctors", {
+            const response = await fetch("http://api:8080/Doctor/doctors", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -26,8 +26,8 @@ export default function Page() {
     }, [])
 
     const getSlots = async (id: any) => {
-        // http://localhost:5243/Doctor/empty-slots?id=1
-        const response = await fetch("http://localhost:5243/Doctor/empty-slots?id=" + id, {
+        // http://api:8080/Doctor/empty-slots?id=1
+        const response = await fetch("http://api:8080/Doctor/empty-slots?id=" + id, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -47,7 +47,7 @@ export default function Page() {
     const handleSubmit = async (e:any) => 
     {
         e.preventDefault();
-        const response  = await fetch('http://localhost:5243/Patient/appointments?AccountId=' + Cookies.get("id") + '&SlotId=' + e.target.slot.value , {
+        const response  = await fetch('http://api:8080/Patient/appointments?AccountId=' + Cookies.get("id") + '&SlotId=' + e.target.slot.value , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

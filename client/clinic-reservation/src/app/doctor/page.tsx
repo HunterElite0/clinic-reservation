@@ -15,7 +15,7 @@ export default function Page() {
   useEffect(() => {
     setName(Cookies.get("name"));
     const fetchAppointmets = async () => {
-      const fetchUrl: string = "http://localhost:5243/Doctor/slots?id=" + Cookies.get("id");
+      const fetchUrl: string = "http://api:8080/Doctor/slots?id=" + Cookies.get("id");
       const response = await fetch(fetchUrl, {
         method: "GET",
         headers: {
@@ -40,7 +40,7 @@ export default function Page() {
   };
   const handleCancel = async (sid: number) => {
     const response = await fetch(
-      "http://localhost:5243/Doctor/slots?AccountId=" +
+      "http://api:8080/Doctor/slots?AccountId=" +
         Cookies.get("id") +
         "&SlotId=" +
         sid,
@@ -67,7 +67,7 @@ export default function Page() {
     router.push("/");
   }
 
-  // http://localhost:5243/Doctor/slots?AccountId=1&SlotId=1
+  // http://api:8080/Doctor/slots?AccountId=1&SlotId=1
 
   return (
     <main>

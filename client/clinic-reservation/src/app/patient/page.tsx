@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 export default function Page() {
   const Cookies = require('js-cookie')
   const router = useRouter();
-  const url: string = "http://localhost:5243/Patient/appointments";
+  const url: string = "http://api:8080/Patient/appointments";
   const [name, setName] = useState('');
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);

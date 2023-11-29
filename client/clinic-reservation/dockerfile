@@ -1,6 +1,6 @@
 # Use a Node.js base image
 
-FROM node:latest
+FROM node:20-alpine
 
 # Set the working directory in the container
 
@@ -9,6 +9,8 @@ WORKDIR /src
 # Copy package.json and package-lock.json to the working directory
 
 COPY package.json package-lock.json /src/
+
+RUN apk --no-cache add curl
 
 # Install dependencies
 

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Update;
 
 namespace clinic_reservation;
 [ApiController]
 [Route("[controller]")]
+[EnableCors]
 public class DoctorController : ControllerBase
 {
     private readonly IConfiguration _configuration;

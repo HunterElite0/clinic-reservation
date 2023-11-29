@@ -12,4 +12,5 @@ RUN dotnet publish "clinic-reservation.csproj" -c Release -o /app/publish
 WORKDIR /app
 COPY ./startup.sh .
 RUN chmod 777 ./startup.sh
+EXPOSE 8080
 CMD [ "sh","./startup.sh" ]

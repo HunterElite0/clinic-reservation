@@ -17,10 +17,14 @@ export default function Page() {
         e.preventDefault();
         
         setName(name.replace(/\s/g, ''));
-        const response = await fetch("http://localhost:5243/Account/signup", {
+        const response = await fetch("http://localhost:8000/Account/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Allow-Cross-Origin": "*",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With",
             },
             body: JSON.stringify({
                 "name": name,

@@ -1,11 +1,13 @@
 ﻿using clinic_reservation.Hubs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
 
 namespace clinic_reservation;
 
 [ApiController]
 [Route("[controller]")]
+[EnableCors]
 public class PatientController : ControllerBase
 {
     private readonly ClinicContext _context;

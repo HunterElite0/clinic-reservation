@@ -1,12 +1,14 @@
 ﻿using System.Data;
 using clinic_reservation.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace clinic_reservation;
 [ApiController]
 [Route("[controller]")]
+[EnableCors]
 public class AccountController : ControllerBase
 {
     private readonly IConfiguration _configuration;
