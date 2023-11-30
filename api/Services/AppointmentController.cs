@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using clinic_reservation.Hubs;
 
 namespace clinic_reservation;
 
@@ -42,7 +43,7 @@ public class AppointmentController
         }
 
 
-    
+
         var appointment = new Appointment
         {
             PatientId = patient.Id,
@@ -51,6 +52,9 @@ public class AppointmentController
         slot.IsBooked = true;
         _context.Appointment.Add(appointment);
         _context.SaveChanges();
+        string message = "You have a new appointment";
+        string destination = slot.DoctorId.ToString();
+        new RabbitMq(message, destination);
     }
 
     public void CancelAppointment(int AccountId, int AppointmentId)
@@ -72,6 +76,9 @@ public class AppointmentController
 
         _context.Appointment.Remove(appointment);
         _context.SaveChanges();
+        string message = "A patient canceled an appointment";
+        string destination = slot.DoctorId.ToString();
+        _ = new RabbitMq(message, destination);
     }
 
     public void EditAppointment(int AccountId, int AppointmentId, int SlotId)
@@ -101,8 +108,11 @@ public class AppointmentController
             }
         }
 
-        
+
         _context.SaveChanges();
+        string message = "A patient rescheduled an appointment";
+        string destination = newSlot.DoctorId.ToString();
+        new RabbitMq(message, destination);
     }
 
 }

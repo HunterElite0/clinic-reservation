@@ -7,7 +7,7 @@
    docker run -d --name mysqldb -e MYSQL_ROOT_PASSWORD=Yassoo_13 --net backend-network [mysql-image]
 
 # rabbitmq container - name "rabbit" is a hard requirement
-   docker run -d -it --rm --name rabbit -p 5672:5672 -p 15672:15672 --net backend-network rabbitmq:3.12-management
+   docker run -d --name rabbit -p 5672:5672 -p 8080:15672 --net backend-network rabbitmq:3.12-management
 
 # dotnet container
    docker run -it --rm --name backend -p 8000:8080 --net backend-network --net frontend-network [asp-image]

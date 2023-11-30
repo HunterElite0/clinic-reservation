@@ -23,7 +23,7 @@ export default function Page() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setSlotTime(slotTime.replace("T", " "));
-    const response = await fetch("http://api:8080/Doctor/slots?AccountId=" + Cookies.get('id') + "&SlotId=" + Cookies.get('slotId') , {
+    const response = await fetch("http://localhost:8000/Doctor/slots?AccountId=" + Cookies.get('id') + "&SlotId=" + Cookies.get('slotId') , {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

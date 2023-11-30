@@ -1,5 +1,4 @@
-﻿using clinic_reservation.Hubs;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
 
@@ -67,8 +66,6 @@ public class PatientController : ControllerBase
             return new JsonResult(e.Message);
         }
 
-        string message = $"patientAccountId: {AccountId}, Operation: ReservationCreated";
-        var sender = new RabbitMq(message);
         return new JsonResult("Appointment added successfuly.");
 
     }

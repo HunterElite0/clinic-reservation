@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Update;
+using clinic_reservation.Hubs;
+using System.Net.WebSockets;
+using System.Text;
 
 namespace clinic_reservation;
 [ApiController]
@@ -28,29 +31,29 @@ public class DoctorController : ControllerBase
             .Include(d => d.Slots)
             .ToList();
         return new JsonResult(results);
-    }   
+    }
 
 
     [HttpGet("slots", Name = "GetSlots")]
     public JsonResult GetSlots([FromQuery] int id)
     {
-            try
+        try
+        {
+            var results = _slotController.GetDoctorSlots(id);
+            if (results.Count == 0)
             {
-                var results = _slotController.GetDoctorSlots(id);
-                if (results.Count == 0)
-                {
-                    return new JsonResult("You have no open slots.");
-                }
-                return new JsonResult(results);
+                return new JsonResult("You have no open slots.");
             }
-            catch(InvalidDataException e)
-            {
-                return new JsonResult(e.Message);    
+            return new JsonResult(results);
+        }
+        catch (InvalidDataException e)
+        {
+            return new JsonResult(e.Message);
         }
     }
 
     [HttpPost("slots", Name = "AddSlot")]
-    public JsonResult AddSlot(int AccountId, [FromBody]string StartDate)
+    public JsonResult AddSlot(int AccountId, [FromBody] string StartDate)
     {
         try
         {
@@ -84,7 +87,7 @@ public class DoctorController : ControllerBase
     }
 
     [HttpPut("slots", Name = "UpdateSlot")]
-    public JsonResult UpdateSlot(int AccountId, int SlotId,[FromBody] string StartTime)
+    public JsonResult UpdateSlot(int AccountId, int SlotId, [FromBody] string StartTime)
     {
         try
         {
@@ -116,4 +119,22 @@ public class DoctorController : ControllerBase
         }
     }
 
+    [HttpGet("notifications", Name = "GetNotifications")]
+    public JsonResult GetNotifications([FromQuery] int id)
+    {
+        try
+        {
+            var results = new RabbitMqSub(id.ToString())._message;
+            if (results == "")
+            {
+                return new JsonResult("You have no notifications.");
+            }
+            return new JsonResult(results);
+        }
+        catch (InvalidDataException e)
+        {
+            return new JsonResult(e.Message);
+        }
+    }
+    
 }

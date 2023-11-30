@@ -1,11 +1,13 @@
 ﻿using System.Text;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 namespace clinic_reservation.Hubs;
 
-public class RabbitMq
+public class RabbitMqSub
 {
-    public RabbitMq(String message, String destination)
+    public string? _message = "";
+    public RabbitMqSub(String destination)
     {
 
         ConnectionFactory factory = new();
@@ -13,30 +15,41 @@ public class RabbitMq
         factory.ClientProvidedName = "RabbitMq";
         using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();
+        var body = null as byte[];
+        var messages = "";
+        channel.BasicQos(prefetchSize: 0, prefetchCount: 10, global: false);
 
         var routingKey = destination.ToString();
         var exchangeName = "doctor-notification";
 
         channel.ExchangeDeclare(exchange: exchangeName,
-                                type: ExchangeType.Direct);
+                        type: ExchangeType.Direct);
         channel.QueueDeclare(queue: routingKey,
                             durable: false,
                             exclusive: false,
                             autoDelete: false,
                             arguments: null);
-
         channel.QueueBind(queue: routingKey, exchangeName, routingKey);
 
-        var json = JsonConvert.SerializeObject(message);
-        var body = Encoding.UTF8.GetBytes(json);
+        var messageCount = channel.MessageCount(destination);
+        BasicGetResult? result = null;
+        if (messageCount == 0)
+        {
+            _message = "You have no notifications.";
+        }
+        else
+        {
+            while (messageCount > 0)
+            {
+                result = channel.BasicGet(destination, true);
+                var message = Encoding.UTF8.GetString(result.Body.ToArray());
+                messages += message + ":";
+                messageCount = channel.MessageCount(destination);
+            }
+        }
 
-        channel.BasicPublish(exchange: exchangeName,
-                             routingKey: routingKey,
-                             body: body);
-
+        _message = messages;
         channel.Close();
         connection.Close();
     }
-
-
 }

@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 export default function EditSlot() {
   const Cookies = require('js-cookie')
   const router = useRouter();
-  const url: string = "http://api:8080/Patient/appointments";
+  const url: string = "http://localhost:8000/Patient/appointments";
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
@@ -16,7 +16,7 @@ export default function EditSlot() {
 
   useEffect(() => {
     const fetchSlots = async () => {
-      const fetchUrl: string = "http://api:8080/Doctor/empty-slots?id=" + Cookies.get("doctorId");
+      const fetchUrl: string = "http://localhost:8000/Doctor/empty-slots?id=" + Cookies.get("doctorId");
       const response = await fetch(fetchUrl, {
         method: "GET",
         headers: {
@@ -35,12 +35,12 @@ export default function EditSlot() {
     fetchSlots();
   }, []);
 
-  // http://api:8080/Patient/appointments?AccountId=2&AppointmentId=3&SlotId=5
+  // http://localhost:8000/Patient/appointments?AccountId=2&AppointmentId=3&SlotId=5
 
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const url : string = "http://api:8080/Patient/appointments?AccountId=" + Cookies.get("id") + "&AppointmentId=" + Cookies.get("appointmentId") + "&SlotId=" + e.target.slot.value;
+    const url : string = "http://localhost:8000/Patient/appointments?AccountId=" + Cookies.get("id") + "&AppointmentId=" + Cookies.get("appointmentId") + "&SlotId=" + e.target.slot.value;
     const response = await fetch(url, {
       method: "PUT",
       headers: {

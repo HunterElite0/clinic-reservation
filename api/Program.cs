@@ -10,8 +10,6 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var serverVersion = ServerVersion.AutoDetect(connectionString);
-var broker = new RabbitMq("Test");
-
 
 // Add services to the container.
 
@@ -52,7 +50,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseCors(MyAllowSpecificOrigins);
-
+app.UseWebSockets();
 app.UseAuthentication();
 app.UseAuthorization();
 
