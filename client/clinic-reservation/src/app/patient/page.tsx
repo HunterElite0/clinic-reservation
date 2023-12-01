@@ -81,7 +81,7 @@ export default function Page() {
                   <td>{appointment.Slot.StartTime}</td>
                   <td>Dr.{appointment.Slot.Doctor.Name}</td>
                   <td>
-                    <button onClick={(e: any) => handleEdit(appointment.Slot.Doctor.Id, appointment.Id)}>
+                    <button onClick={(e: any) => handleEdit(appointment.Slot.Doctor.AccountId, appointment.Id)}>
                       Edit
                     </button>
                   </td>

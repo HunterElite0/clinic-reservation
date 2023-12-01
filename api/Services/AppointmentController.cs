@@ -35,6 +35,7 @@ public class AppointmentController
 
         var slot = _context.Slot
             .Where(s => s.Id == SlotId)
+            .Include(s => s.Doctor)
             .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
 
         if (slot.IsBooked)
@@ -53,7 +54,7 @@ public class AppointmentController
         _context.Appointment.Add(appointment);
         _context.SaveChanges();
         string message = "You have a new appointment";
-        string destination = slot.DoctorId.ToString();
+        string destination = slot.Doctor.AccountId.ToString();
         new RabbitMq(message, destination);
     }
 
@@ -69,6 +70,7 @@ public class AppointmentController
 
         var slot = _context.Slot
             .Where(s => s.Id == appointment.SlotId)
+            .Include(s => s.Doctor)
             .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
 
         slot.IsBooked = false;
@@ -77,7 +79,7 @@ public class AppointmentController
         _context.Appointment.Remove(appointment);
         _context.SaveChanges();
         string message = "A patient canceled an appointment";
-        string destination = slot.DoctorId.ToString();
+        string destination = slot.Doctor.AccountId.ToString();
         _ = new RabbitMq(message, destination);
     }
 
@@ -94,6 +96,7 @@ public class AppointmentController
 
         var newSlot = _context.Slot
             .Where(s => s.Id == SlotId)
+            .Include(s => s.Doctor)
             .FirstOrDefault() ?? throw new InvalidDataException("Slot not found");
 
         if (!newSlot.IsBooked)
@@ -111,7 +114,7 @@ public class AppointmentController
 
         _context.SaveChanges();
         string message = "A patient rescheduled an appointment";
-        string destination = newSlot.DoctorId.ToString();
+        string destination = newSlot.Doctor.AccountId.ToString();
         new RabbitMq(message, destination);
     }
 

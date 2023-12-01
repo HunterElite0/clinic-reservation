@@ -90,6 +90,7 @@ export default function Page() {
               slots.map((slot) => (
                 <tr key={slot.Id}>
                   <td>{slot.StartTime}</td>
+                  <td>{slot.IsBooked ? <a> -- Slot is booked</a> : <a> -- Slot is not booked</a>}</td>
                   <td>
                     <button
                       onClick={(e: any) => handleEdit(slot.Id)}

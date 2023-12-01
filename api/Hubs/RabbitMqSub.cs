@@ -11,7 +11,7 @@ public class RabbitMqSub
     {
 
         ConnectionFactory factory = new();
-        factory.Uri = new Uri("amqp://guest:guest@localhost:5672");
+        factory.Uri = new Uri("amqp://guest:guest@rabbit:5672");
         factory.ClientProvidedName = "RabbitMq";
         using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();

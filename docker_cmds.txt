@@ -4,10 +4,10 @@
    docker network create frontend-network
 
 # mysql container - name "mysqldb" is a hard requirement
-   docker run -d --name mysqldb -e MYSQL_ROOT_PASSWORD=Yassoo_13 --net backend-network [mysql-image]
+   docker run -d --name mysqldb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=Yassoo_13 mysql:8.0.35-debian
 
 # rabbitmq container - name "rabbit" is a hard requirement
-   docker run -d --name rabbit -p 5672:5672 -p 8080:15672 --net backend-network rabbitmq:3.12-management
+   docker run -d --name rabbit -p 5672:5672 -p 8080:15672 rabbitmq:3.12-management
 
 # dotnet container
    docker run -it --rm --name backend -p 8000:8080 --net backend-network --net frontend-network [asp-image]
@@ -15,4 +15,9 @@
 # react container
    docker run -it --rm --name frontend -p 8001:3000 --net frontend-network [node-image]
 
+# remove all unused images and networks
+   docker system prune -a
 
+# docker compose commands
+   docker compose up -d
+   docker compose down --rmi all
