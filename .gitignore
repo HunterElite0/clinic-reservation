@@ -1,6 +1,6 @@
-/bin/
-/obj
-/wwwroot/uploads/
-.vs/
-*.pdb
-*.dll
+api/bin/
+api/obj
+api/wwwroot/uploads/
+.vscode
+api/*.pdb
+api/*.dll

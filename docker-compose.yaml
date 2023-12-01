@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  api:
+    build: ./api/
+    ports:
+      - "8000:8080"
+    restart: always
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - mysqldb
+      - rabbit
+  mysqldb:
+    build: ./mysql-docker/
+    restart: always
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=Yassoo_13
+  rabbit:
+    build: ./rabbitmq-docker/
+    networks:
+      - backend
+  client:
+    build: ./client/clinic-reservation/
+    networks:
+      - frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+networks:
+  backend:
+  frontend:

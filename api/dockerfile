@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 as base
+WORKDIR /app
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+COPY . /src
+WORKDIR /src
+RUN ls
+RUN dotnet build "clinic-reservation.csproj" -c Release -o /app/build
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+RUN dotnet publish "clinic-reservation.csproj" -c Release -o /app/publish
+WORKDIR /app
+COPY ./startup.sh .
+RUN chmod 777 ./startup.sh
+EXPOSE 8080
+CMD [ "sh","./startup.sh" ]
