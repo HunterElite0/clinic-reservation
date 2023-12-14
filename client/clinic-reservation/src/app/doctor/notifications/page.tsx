@@ -3,6 +3,7 @@
 //import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { URL } from "../../config";
 
 export default function Page() {
   const Cookies = require("js-cookie");
@@ -15,7 +16,7 @@ export default function Page() {
   useEffect(() => {
     const fetchMessages = async () => {
       const fetchUrl: string =
-        "http://localhost:8000/Doctor/notifications?id=" + id;
+        URL + "/Doctor/notifications?id=" + id;
       const response = await fetch(fetchUrl, {
         method: "GET",
         headers: {

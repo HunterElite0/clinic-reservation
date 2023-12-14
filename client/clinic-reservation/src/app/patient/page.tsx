@@ -3,11 +3,12 @@
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { URL } from "../config";
 
 export default function Page() {
   const Cookies = require('js-cookie')
   const router = useRouter();
-  const url: string = "http://localhost:8000/Patient/appointments";
+  const url: string = URL +"/Patient/appointments";
   const [name, setName] = useState('');
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);

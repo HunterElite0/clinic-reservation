@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
+import { URL } from "../../config"
+
 
 export default function EditSlot() {
   const Cookies = require("js-cookie");
@@ -14,7 +16,7 @@ export default function EditSlot() {
   useEffect(() => {
     const fetchSlots = async () => {
       const fetchUrl: string =
-        "http://localhost:8000/Doctor/empty-slots?id=" +
+        URL + "/Doctor/empty-slots?id=" +
         Cookies.get("doctorId");
       const response = await fetch(fetchUrl, {
         method: "GET",

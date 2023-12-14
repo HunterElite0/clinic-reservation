@@ -3,6 +3,8 @@
 import { useState } from "react";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
+import { URL } from "../config"
+
 
 export default function Page() {
     const router = useRouter();
@@ -13,11 +15,12 @@ export default function Page() {
     const [role, setRole] = useState("");
 
 
+    console.log("after changes: " + URL);
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         
         setName(name.replace(/\s/g, ''));
-        const response = await fetch("http://localhost:8000/Account/signup", {
+        const response = await fetch(URL + "/Account/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

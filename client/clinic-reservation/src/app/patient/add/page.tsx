@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { URL } from "../../config";
+
 
 export default function Page() {
     const Cookies = require('js-cookie')
@@ -11,9 +13,9 @@ export default function Page() {
     
     useEffect(() => {
         const getDoctors = async () => {
-            // http://localhost:8000/Doctor/doctors
+            //URL +  Doctor/doctors
 
-            const response = await fetch("http://localhost:8000/Doctor/doctors", {
+            const response = await fetch(URL+"/Doctor/doctors", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -26,8 +28,8 @@ export default function Page() {
     }, [])
 
     const getSlots = async (id: any) => {
-        // http://localhost:8000/Doctor/empty-slots?id=1
-        const response = await fetch("http://localhost:8000/Doctor/empty-slots?id=" + id, {
+        //URL +  Doctor/empty-slots?id=1
+        const response = await fetch(URL + "Doctor/empty-slots?id=" + id, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -47,7 +49,7 @@ export default function Page() {
     const handleSubmit = async (e:any) => 
     {
         e.preventDefault();
-        const response  = await fetch('http://localhost:8000/Patient/appointments?AccountId=' + Cookies.get("id") + '&SlotId=' + e.target.slot.value , {
+        const response  = await fetch(URL + 'Patient/appointments?AccountId=' + Cookies.get("id") + '&SlotId=' + e.target.slot.value , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

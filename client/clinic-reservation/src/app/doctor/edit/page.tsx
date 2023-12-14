@@ -3,6 +3,7 @@
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { URL } from "../../config";
 
 export default function Page() {
   const Cookies = require("js-cookie");
@@ -23,7 +24,7 @@ export default function Page() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setSlotTime(slotTime.replace("T", " "));
-    const response = await fetch("http://localhost:8000/Doctor/slots?AccountId=" + Cookies.get('id') + "&SlotId=" + Cookies.get('slotId') , {
+    const response = await fetch(URL+ "/Doctor/slots?AccountId=" + Cookies.get('id') + "&SlotId=" + Cookies.get('slotId') , {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +41,7 @@ export default function Page() {
         <h1>Edit your slot</h1>
         <div>
             <form onSubmit={handleSubmit}>
-            <label>New date and time for your slot: </label>
+            <label htmlFor="slot">New date and time for your slot: </label>
             <br />
             <input
                 type="datetime-local"
