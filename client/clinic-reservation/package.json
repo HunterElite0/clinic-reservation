@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@microsoft/signalr": "^7.0.12",
     "amqplib": "^0.10.3",
     "js-cookie": "^3.0.5",
     "next": "latest",

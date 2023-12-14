@@ -17,8 +17,9 @@ export default function Home() {
     setEmail(email.replace(/\s/g, ''));
     setPassword(password.replace(/\s/g, ''));
     const account = { email, password };
+    console.log(process.env.API);
     // curl -X POST http://app:8080/Account/signin -H 'Content-Type: application/json' \  -d '{"email": "string", "password": "string", "role": 0}'
-    const response = await fetch("http://localhost:8000/Account/signin", {
+    const response = await fetch(process.env.API + "/Account/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

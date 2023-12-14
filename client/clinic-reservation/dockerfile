@@ -24,6 +24,10 @@ COPY . .
 
 EXPOSE 3000
 
+ENV API="http://localhost:8000"
+
 # Define the command to start the app
 
-CMD ["npm", "run","dev"]
+RUN npm run build
+
+CMD ["npm", "run", "start"]

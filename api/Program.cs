@@ -8,7 +8,7 @@ using clinic_reservation.Hubs;
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = Environment.GetEnvironmentVariable("MYSQLDB");
 var serverVersion = ServerVersion.AutoDetect(connectionString);
 
 // Add services to the container.
