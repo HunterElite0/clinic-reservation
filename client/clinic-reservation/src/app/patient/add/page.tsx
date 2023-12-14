@@ -13,8 +13,6 @@ export default function Page() {
     
     useEffect(() => {
         const getDoctors = async () => {
-            //URL +  Doctor/doctors
-
             const response = await fetch(URL+"/Doctor/doctors", {
                 method: "GET",
                 headers: {
@@ -28,8 +26,7 @@ export default function Page() {
     }, [])
 
     const getSlots = async (id: any) => {
-        //URL +  Doctor/empty-slots?id=1
-        const response = await fetch(URL + "Doctor/empty-slots?id=" + id, {
+        const response = await fetch(URL + "/Doctor/empty-slots?id=" + id, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -49,7 +46,7 @@ export default function Page() {
     const handleSubmit = async (e:any) => 
     {
         e.preventDefault();
-        const response  = await fetch(URL + 'Patient/appointments?AccountId=' + Cookies.get("id") + '&SlotId=' + e.target.slot.value , {
+        const response  = await fetch(URL + '/Patient/appointments?AccountId=' + Cookies.get("id") + '&SlotId=' + e.target.slot.value , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

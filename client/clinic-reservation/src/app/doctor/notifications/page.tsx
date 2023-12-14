@@ -46,7 +46,7 @@ export default function Page() {
               <p>{message}</p>
           ))
         ) : (
-          <p>You have no notifications.</p>
+          <p>You have no new notifications.</p>
         )}    
       </div>
     </main>

@@ -35,13 +35,11 @@ export default function EditSlot() {
     };
     fetchSlots();
   }, []);
-
-  // http://localhost:8000/Patient/appointments?AccountId=2&AppointmentId=3&SlotId=5
-
+  
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const url: string =
-      "http://localhost:8000/Patient/appointments?AccountId=" +
+      URL + "/Patient/appointments?AccountId=" +
       Cookies.get("id") +
       "&AppointmentId=" +
       Cookies.get("appointmentId") +
