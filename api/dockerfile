@@ -13,6 +13,6 @@ WORKDIR /app
 COPY ./startup.sh .
 RUN chmod 777 ./startup.sh
 EXPOSE 8080
-ENV RABBITMQ="amqp://guest:guest@rabbit:5672"
-ENV MYSQLDB="server=mysqldb;port=3306;database=clinic;user=root;password=Yassoo_13;"
+# ENV RABBITMQ="amqp://guest:guest@rabbit:5672"
+# ENV MYSQLDB="server=mysqldb;port=3306;database=clinic;user=root;password=Yassoo_13;"
 CMD [ "sh","./startup.sh" ]
