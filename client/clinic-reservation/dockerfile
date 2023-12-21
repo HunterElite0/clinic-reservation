@@ -19,6 +19,7 @@ RUN npm install
 
 USER app
 RUN npm run build
+RUN chmod -R 775 /app
 EXPOSE 3000
-USER app
-RUN npm run start
+USER 1000
+CMD [ "npm", "run", "start" ]
