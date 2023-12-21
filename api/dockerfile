@@ -8,12 +8,12 @@ WORKDIR /src
 RUN ls
 RUN dotnet build "clinic-reservation.csproj" -c Release -o /app/build
 RUN dotnet tool install --global dotnet-ef
-ENV PATH="$PATH:/root/.dotnet/tools"
+ENV PATH="$PATH:/userapi/.dotnet/tools"
 RUN dotnet publish "clinic-reservation.csproj" -c Release -o /app/publish
 WORKDIR /app
 COPY ./startup.sh .
 RUN chmod 777 ./startup.sh
 EXPOSE 8080
 # ENV RABBITMQ="amqp://guest:guest@rabbit:5672"
-# ENV MYSQLDB="server=mysqldb;port=3306;database=clinic;user=root;password=Yassoo_13;"
+# ENV MYSQLDB="server=mysql;port=3306;database=clinic;user=root;password=Yassoo_13;"
 CMD [ "sh","./startup.sh" ]
