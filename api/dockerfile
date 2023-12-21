@@ -7,8 +7,8 @@ COPY . /src
 WORKDIR /src
 RUN ls
 RUN dotnet build "clinic-reservation.csproj" -c Release -o /app/build
-# RUN dotnet tool install --global dotnet-ef
-# ENV PATH="$PATH:/userapi/.dotnet/tools"
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/userapi/.dotnet/tools"
 RUN dotnet publish "clinic-reservation.csproj" -c Release -o /app/publish
 WORKDIR /app
 COPY ./startup.sh .
