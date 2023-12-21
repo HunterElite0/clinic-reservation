@@ -1,33 +1,28 @@
 # Use a Node.js base image
-
 FROM node:20-alpine
 
 # Set the working directory in the container
+RUN mkdir -p /home/node/app &&\
+    chown -R node:node /home/node/app
+WORKDIR /home/node/app
 
-WORKDIR /src
+RUN chgrp -R 0 /home/node/app &&\
+    chmod -R g+rwX /home/node/app
 
-# Copy package.json and package-lock.json to the working directory
-
-COPY package.json package-lock.json /src/
-
-RUN apk --no-cache add curl
-
-# Install dependencies
-
+COPY package*.json /home/node/app/
+USER 1000
 RUN npm install
 
-# Copy all files from the current directory to the working directory
 
-COPY . .
+# RUN addgroup --system --gid 1001 nodejs
+# RUN adduser --system --uid 1001 nextjs
 
-# Expose the port the app runs on
-
-EXPOSE 3000
+# RUN mkdir .next
+# RUN chown nextjs:nodejs .next
 
 # ENV NEXT_PUBLIC_API="http://localhost:8000"
 
-# Define the command to start the app
-
+COPY --chown=node:node . /home/node/app
 RUN npm run build
-
+EXPOSE 3000
 CMD ["npm", "run", "start"]
