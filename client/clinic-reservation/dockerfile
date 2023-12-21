@@ -2,17 +2,14 @@
 FROM node:20-alpine
 
 # Set the working directory in the container
-RUN mkdir -p /home/node/app &&\
-    chown -R node:node /home/node/app
-WORKDIR /home/node/app
+RUN addgroup app && adduser -S -G app app
+RUN mkdir /app && chown app:app /app
+USER app
 
-RUN chgrp -R 0 /home/node/app &&\
-    chmod -R g+rwX /home/node/app
-
-COPY package*.json /home/node/app/
-USER 1000
+WORKDIR /app
+COPY package*.json ./
 RUN npm install
-
+COPY . .
 
 # RUN addgroup --system --gid 1001 nodejs
 # RUN adduser --system --uid 1001 nextjs
@@ -22,7 +19,6 @@ RUN npm install
 
 # ENV NEXT_PUBLIC_API="http://localhost:8000"
 
-COPY --chown=node:node . /home/node/app
 RUN npm run build
 EXPOSE 3000
 CMD ["npm", "run", "start"]
