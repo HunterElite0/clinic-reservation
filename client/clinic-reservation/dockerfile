@@ -81,6 +81,9 @@ ENV NODE_ENV production
 # Uncomment the following line in case you want to enable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
 
+# Uncomment the following line if you are setting this env elsewhere
+ENV NEXT_PUBLIC_API api:8080
+
 COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
