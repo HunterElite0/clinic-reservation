@@ -66,6 +66,9 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED 1
 
+# Uncomment the following line if you are setting this env elsewhere
+ENV NEXT_PUBLIC_API localhost:8000
+
 # If using yarn uncomment out and comment out npm below
 # RUN yarn build
 
@@ -81,8 +84,6 @@ ENV NODE_ENV production
 # Uncomment the following line in case you want to enable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# Uncomment the following line if you are setting this env elsewhere
-ENV NEXT_PUBLIC_API api:8080
 
 COPY --from=builder /app/public ./public
 

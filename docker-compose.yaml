@@ -1,5 +1,6 @@
 services:
   api:
+    container_name: api
     build: ./api/
     ports:
       - "8000:8080"
@@ -11,6 +12,7 @@ services:
       - mysqldb
       - rabbit
   mysqldb:
+    container_name: mysqldb
     build: ./mysql-docker/
     restart: always
     networks:
@@ -18,10 +20,12 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=Yassoo_13
   rabbit:
+    container_name: rabbit
     build: ./rabbitmq-docker/
     networks:
       - backend
   client:
+    container_name: client
     build: ./client/clinic-reservation/
     networks:
       - frontend
