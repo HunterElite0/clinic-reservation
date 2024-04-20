@@ -4,12 +4,14 @@ import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { URL } from "../../config";
+import { authenticate } from "../../common/authenticate";
 
 export default function Page() {
-  const Cookies = require("js-cookie");
+  let Cookies = require("js-cookie");
   const router = useRouter();
   const [slots, setSlots] = useState<any[]>([]);
   const [slotTime, setSlotTime] = useState("");
+  const role = Cookies.get("role");
   let date = new Date(Date.now());
   let dateTime =
     date.getFullYear() +
@@ -21,6 +23,16 @@ export default function Page() {
     date.getHours() +
     ":" +
     date.getMinutes();
+
+  useEffect(() => {
+    if (!authenticate(role, "0")) {
+      Cookies.remove("id");
+      Cookies.remove("email");
+      Cookies.remove("role");
+      router.push("/")
+      return;
+    }
+  }, [])
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();

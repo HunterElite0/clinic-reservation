@@ -4,16 +4,25 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { URL } from "../../config"
+import { authenticate } from "../../common/authenticate";
 
 
 export default function EditSlot() {
-  const Cookies = require("js-cookie");
+  let Cookies = require("js-cookie");
   const router = useRouter();
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
+  const role = Cookies.get("role");
 
   useEffect(() => {
+    if (!authenticate(role, "1")) {
+      router.push("/");
+      Cookies.remove("id");
+      Cookies.remove("email");
+      Cookies.remove("role");;
+      return;
+    }
     const fetchSlots = async () => {
       const fetchUrl: string =
         URL + "/Doctor/empty-slots?id=" +
@@ -35,7 +44,7 @@ export default function EditSlot() {
     };
     fetchSlots();
   }, []);
-  
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const url: string =

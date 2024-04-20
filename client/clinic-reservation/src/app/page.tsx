@@ -9,7 +9,7 @@ export default function Home() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const Cookies = require('js-cookie')
+  let Cookies = require('js-cookie')
 
   const handleSubmit = async (e : any) => {
     e.preventDefault();
@@ -37,12 +37,11 @@ export default function Home() {
     }
     else{
       alert("Logged in successfully");
-      Cookies.set('id', data.Account.Id)
-      Cookies.set('email', data.Account.Email)
-      Cookies.set('role', data.Account.Role)
+      Cookies.set('id', data.Id)
+      Cookies.set('role', data.Role)
       Cookies.set('name', data.Name)
-      if(data.Account.Role === 0){router.push("/doctor")}
-      else if(data.Account.Role === 1){router.push("/patient")}
+      if(data.Role === 0){router.push("/doctor")}
+      else if(data.Role === 1){router.push("/patient")}
       else{alert("Invalid User")}
     }
   }

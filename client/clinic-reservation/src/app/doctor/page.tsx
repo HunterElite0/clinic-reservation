@@ -4,16 +4,25 @@ import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { URL } from "../config"
+import { authenticate } from "../common/authenticate";
 
 export default function Page() {
-  const Cookies = require("js-cookie");
+  let Cookies = require("js-cookie");
   const router = useRouter();
   const [name, setName] = useState("");
   const [slots, setSlots] = useState<any[]>([]);
   const jsonArray: any = [];
+  const role = Cookies.get("role");
 
 
   useEffect(() => {
+    if (!authenticate(role, "0")) {
+      Cookies.remove("id");
+      Cookies.remove("email");
+      Cookies.remove("role");
+      router.push("/")
+    }
+
     setName(Cookies.get("name"));
     const fetchAppointmets = async () => {
       const fetchUrl: string = URL + "/Doctor/slots?id=" + Cookies.get("id");
@@ -42,9 +51,9 @@ export default function Page() {
   const handleCancel = async (sid: number) => {
     const response = await fetch(
       URL + "/Doctor/slots?AccountId=" +
-        Cookies.get("id") +
-        "&SlotId=" +
-        sid,
+      Cookies.get("id") +
+      "&SlotId=" +
+      sid,
       {
         method: "DELETE",
         headers: {
@@ -115,7 +124,7 @@ export default function Page() {
       <button type="button" onClick={(_) => handleNew()}>
         Open new slot
       </button>
-      <br/>
+      <br />
       <button type="button" onClick={(_) => handleLogout()} >Logout</button>
     </main>
   );

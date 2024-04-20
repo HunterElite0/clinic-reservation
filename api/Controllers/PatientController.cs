@@ -9,95 +9,99 @@ namespace clinic_reservation;
 [EnableCors]
 public class PatientController : ControllerBase
 {
-    private readonly ClinicContext _context;
-    private readonly IConfiguration _configuration;
-    private readonly AppointmentController _appointmentController;
-    public PatientController(ClinicContext context, IConfiguration configuration)
+  private readonly ClinicContext _context;
+  private readonly IConfiguration _configuration;
+  private readonly AppointmentController _appointmentController;
+  public PatientController(ClinicContext context, IConfiguration configuration)
+  {
+    this._context = context;
+    this._configuration = configuration;
+    this._appointmentController = new(this._context);
+  }
+
+  [HttpGet("patients", Name = "GetPatients")]
+  public JsonResult GetPatients()
+  {
+    var results = _context.Patient
+        .Include(p => p.Account)
+        .Include(p => p.Appointments)
+        .ToList();
+    return new JsonResult(results);
+  }
+
+  [HttpGet("appointments", Name = "GetAppointments")]
+  public JsonResult GetAppointments([FromQuery] String id)
+  {
+    try
     {
-        this._context = context;
-        this._configuration = configuration;
-        this._appointmentController = new(this._context);
+      int AccountIdInt = Int32.Parse(EncryptionHelper.Decrypt(id));
+      var results = _appointmentController.GetPatientAppointments(AccountIdInt);
+      if (results.Count == 0)
+      {
+        return new JsonResult("You have no appointments.");
+      }
+      return new JsonResult(results);
+    }
+    catch (InvalidDataException e)
+    {
+      return new JsonResult(e.Message);
     }
 
-    [HttpGet("patients", Name = "GetPatients")]
-    public JsonResult GetPatients()
+
+  }
+
+  [HttpPost("appointments", Name = "AddAppointment")]
+  public JsonResult AddAppointment(string AccountId, int SlotId)
+  {
+    try
     {
-        var results = _context.Patient
-            .Include(p => p.Account)
-            .Include(p => p.Appointments)
-            .ToList();
-        return new JsonResult(results);
+      int AccountIdInt = Int32.Parse(EncryptionHelper.Decrypt(AccountId));
+      _appointmentController.MakeAppointment(AccountIdInt, SlotId);
+    }
+    catch (InvalidDataException e)
+    {
+      return new JsonResult(e.Message);
+    }
+    catch (Exception e)
+    {
+
+      return new JsonResult(e.Message);
     }
 
-    [HttpGet("appointments", Name = "GetAppointments")]
-    public JsonResult GetAppointments([FromQuery] int id)
+    return new JsonResult("Appointment added successfuly.");
+
+  }
+  [HttpDelete("appointments", Name = "CancelAppointment")]
+  public JsonResult CancelAppointment(string AccountId, int AppointmentId)
+  {
+    try
     {
-        try
-        {
-            var results = _appointmentController.GetPatientAppointments(id);
-            if (results.Count == 0)
-            {
-                return new JsonResult("You have no appointments.");
-            }
-            return new JsonResult(results);
-        }
-        catch (InvalidDataException e)
-        {
-            return new JsonResult(e.Message);
-        }
-
-
+      int AccountIdInt = Int32.Parse(EncryptionHelper.Decrypt(AccountId));
+      _appointmentController.CancelAppointment(AccountIdInt, AppointmentId);
     }
-
-    [HttpPost("appointments", Name = "AddAppointment")]
-    public JsonResult AddAppointment(int AccountId, int SlotId)
+    catch (InvalidDataException e)
     {
-        try
-        {
-            _appointmentController.MakeAppointment(AccountId, SlotId);
-        }
-        catch (InvalidDataException e)
-        {
-            return new JsonResult(e.Message);
-        }
-        catch (Exception e)
-        {
-
-            return new JsonResult(e.Message);
-        }
-
-        return new JsonResult("Appointment added successfuly.");
-
+      return new JsonResult(e.Message);
     }
-    [HttpDelete("appointments", Name = "CancelAppointment")]
-    public JsonResult CancelAppointment(int AccountId, int AppointmentId)
+    return new JsonResult("Appointment cancelled successfuly.");
+  }
+
+  [HttpPut("appointments", Name = "EditAppointment")]
+  public JsonResult EditAppointment(string AccountId, int AppointmentId, int SlotId)
+  {
+    try
     {
-        try
-        {
-            _appointmentController.CancelAppointment(AccountId, AppointmentId);
-        }
-        catch (InvalidDataException e)
-        {
-            return new JsonResult(e.Message);
-        }
-        return new JsonResult("Appointment cancelled successfuly.");
+      int AccountIdInt = Int32.Parse(EncryptionHelper.Decrypt(AccountId));
+      _appointmentController.EditAppointment(AccountIdInt, AppointmentId, SlotId);
     }
-
-    [HttpPut("appointments", Name = "EditAppointment")]
-    public JsonResult EditAppointment(int AccountId, int AppointmentId, int SlotId)
+    catch (InvalidDataException e)
     {
-        try
-        {
-            _appointmentController.EditAppointment(AccountId, AppointmentId, SlotId);
-        }
-        catch (InvalidDataException e)
-        {
-            return new JsonResult(e.Message);
-        }
-        catch (InvalidOperationException e)
-        {
-            return new JsonResult(e.Message);
-        }
-        return new JsonResult("Appointment updated successfuly.");
+      return new JsonResult(e.Message);
     }
+    catch (InvalidOperationException e)
+    {
+      return new JsonResult(e.Message);
+    }
+    return new JsonResult("Appointment updated successfuly.");
+  }
 }

@@ -4,17 +4,26 @@ import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { URL } from "../config";
+import { authenticate } from "../common/authenticate";
 
 export default function Page() {
-  const Cookies = require('js-cookie')
+  let Cookies = require('js-cookie')
   const router = useRouter();
-  const url: string = URL +"/Patient/appointments";
+  const url: string = URL + "/Patient/appointments";
   const [name, setName] = useState('');
   const [appointments, setAppointments] = useState<any[]>([]);
   const [slots, setSlots] = useState<any[]>([]);
+  const role = Cookies.get("role");
   const jsonArray: any = [];
 
   useEffect(() => {
+    if (!authenticate(role, "1")) {
+      router.push("/");
+      Cookies.remove("id");
+      Cookies.remove("email");
+      Cookies.remove("role");;
+      return;
+    }
     setName(Cookies.get("name"));
     const fetchAppointmets = async () => {
       const fetchUrl: string = url + "?id=" + Cookies.get("id");
